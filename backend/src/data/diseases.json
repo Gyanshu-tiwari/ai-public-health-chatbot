@@ -1,0 +1,13 @@
+{
+  "fever": {
+    "symptoms": [
+      "high temperature",
+      "chills"
+    ],
+    "prevention": [
+      "rest",
+      "hydration"
+    ],
+    "warning": "Consult doctor if fever lasts more than 3 days"
+  }
+}
