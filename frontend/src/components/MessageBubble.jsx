@@ -1,1 +1,0 @@
-// User/Bot message bubble
