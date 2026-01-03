@@ -1,13 +1,78 @@
 {
-  "fever": {
-    "symptoms": [
-      "high temperature",
-      "chills"
+  "commonDiseases": [
+    {
+      "id": 1,
+      "name": "Common Cold",
+      "symptoms": ["runny nose", "cough", "sore throat", "sneezing"],
+      "prevention": ["Wash hands regularly", "Avoid close contact with sick people", "Maintain good hygiene"],
+      "when_to_see_doctor": "If symptoms persist for more than 10 days or worsen"
+    },
+    {
+      "id": 2,
+      "name": "Influenza (Flu)",
+      "symptoms": ["fever", "body aches", "fatigue", "cough", "sore throat"],
+      "prevention": ["Get annual flu vaccine", "Maintain distance from sick people", "Practice good hygiene"],
+      "when_to_see_doctor": "If experiencing severe symptoms or shortness of breath - seek immediate medical attention"
+    },
+    {
+      "id": 3,
+      "name": "COVID-19",
+      "symptoms": ["fever", "cough", "fatigue", "loss of taste/smell", "difficulty breathing"],
+      "prevention": ["Get vaccinated", "Wear masks in crowded places if needed", "Maintain distance", "Practice hygiene"],
+      "when_to_see_doctor": "If experiencing difficulty breathing or severe symptoms - seek immediate medical care"
+    },
+    {
+      "id": 4,
+      "name": "Diabetes",
+      "symptoms": ["increased thirst", "frequent urination", "fatigue", "blurred vision"],
+      "prevention": ["Maintain healthy weight", "Exercise regularly", "Eat balanced diet", "Reduce sugar intake"],
+      "when_to_see_doctor": "If experiencing multiple symptoms, consult a healthcare professional for testing"
+    },
+    {
+      "id": 5,
+      "name": "Hypertension (High Blood Pressure)",
+      "symptoms": ["Often asymptomatic", "headaches", "shortness of breath"],
+      "prevention": ["Reduce salt intake", "Exercise regularly", "Maintain healthy weight", "Manage stress"],
+      "when_to_see_doctor": "Regular check-ups recommended for early detection"
+    },
+    {
+      "id": 6,
+      "name": "Heart Disease",
+      "symptoms": ["chest pain", "shortness of breath", "fatigue"],
+      "prevention": ["Regular exercise", "Healthy diet", "Avoid smoking", "Manage stress"],
+      "when_to_see_doctor": "If experiencing chest pain or severe symptoms - CALL EMERGENCY IMMEDIATELY"
+    }
+  ],
+  "preventionTips": {
+    "general": [
+      "Wash hands frequently with soap and water",
+      "Maintain a balanced diet rich in fruits and vegetables",
+      "Exercise regularly for at least 30 minutes daily",
+      "Get 7-9 hours of quality sleep",
+      "Manage stress through meditation or exercise",
+      "Stay hydrated - drink plenty of water",
+      "Avoid smoking and excessive alcohol",
+      "Get vaccinated as recommended by health authorities"
     ],
-    "prevention": [
-      "rest",
-      "hydration"
-    ],
-    "warning": "Consult doctor if fever lasts more than 3 days"
-  }
+    "during_illness": [
+      "Rest and recover properly",
+      "Stay hydrated",
+      "Use a humidifier to ease congestion",
+      "Gargle with salt water for sore throat",
+      "Maintain isolation to prevent spreading to others",
+      "Monitor symptoms and seek help if they worsen"
+    ]
+  },
+  "emergency_symptoms": [
+    "Chest pain or pressure",
+    "Difficulty breathing or shortness of breath",
+    "Severe allergic reaction",
+    "Loss of consciousness",
+    "Severe bleeding",
+    "Signs of stroke (face drooping, arm weakness, speech difficulty)",
+    "Severe poisoning or overdose",
+    "Severe choking",
+    "Severe abdominal pain",
+    "High fever with confusion"
+  ]
 }
