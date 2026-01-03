@@ -8,6 +8,9 @@ import symptomRoutes from './routes/symptoms.js';
 import medicalDbRoutes from './routes/medical-db.js';
 import recordsRoutes from './routes/records.js';
 import insuranceRoutes from './routes/insurance.js';
+import authRoutes from './routes/auth.js';
+import { apiKeyAuth } from './middleware/auth.js';
+import connectDB from './config/db.js';
 
 // Load environment variables
 dotenv.config();
@@ -39,14 +42,17 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes
+// Public API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api', chatRoutes);
-app.use('/api/telemedicine', telemedicineRoutes);
-app.use('/api/appointments', appointmentRoutes);
 app.use('/api/symptoms', symptomRoutes);
 app.use('/api/medical-db', medicalDbRoutes);
-app.use('/api/records', recordsRoutes);
-app.use('/api/insurance', insuranceRoutes);
+
+// Protected API Routes (require API key)
+app.use('/api/telemedicine', apiKeyAuth, telemedicineRoutes);
+app.use('/api/appointments', apiKeyAuth, appointmentRoutes);
+app.use('/api/records', apiKeyAuth, recordsRoutes);
+app.use('/api/insurance', apiKeyAuth, insuranceRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -61,8 +67,19 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📡 Chat endpoint: POST http://localhost:${PORT}/api/chat`);
-});
+// Start server (skip when running tests)
+if (process.env.NODE_ENV !== 'test') {
+  connectDB()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`🚀 Server running on http://localhost:${PORT}`);
+        console.log(`📡 Chat endpoint: POST http://localhost:${PORT}/api/chat`);
+      });
+    })
+    .catch((err) => {
+      console.error('Failed to start server due to DB error:', err.message);
+      process.exit(1);
+    });
+}
+
+export default app;
