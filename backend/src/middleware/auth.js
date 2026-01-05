@@ -20,3 +20,16 @@ export const apiKeyAuth = (req, res, next) => {
 
   return next();
 };
+
+export default isLoggedIn = ((req, res, next)=>{
+  
+  // If user is authenticated in the session, carry on
+  if (req.session && req.session.user) {
+    return next();
+  }
+  // If they aren't, redirect them to the login page
+  res.redirect('/login');
+});
+
+
+

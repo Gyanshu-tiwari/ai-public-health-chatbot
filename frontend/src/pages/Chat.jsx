@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import Navbar from "../components/chatComponents/Navbar.jsx";
 import Sidebar from '../components/chatComponents/layout/SideBar';
 import ChatWindow from '../components/chatComponents/chat/ChatWindow';
+import { MemoryRouter, Routes, Route } from "react-router-dom";
+
 
 const Chat = () => {
   const [chats, setChats] = useState([
@@ -17,13 +19,16 @@ const Chat = () => {
     setFolders([...folders, { id: Date.now().toString(), name, color: 'text-indigo-400' }]);
   };
 
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  
+
   return (
-    <MemoryRouter>
+    <>
       {/* Background with deep gradients */}
-      <div className="h-[91%] w-full bg-[#0B0C10] bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/20 via-[#0B0C10] to-purple-900/20 font-sans overflow-hidden">
-        
+      <div className=" h-screen w-full bg-[#0B0C10] bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-900/20 via-[#0B0C10] to-purple-900/20 font-sans overflow-hidden">
+        <Navbar isLoggedIn={isLoggedIn} />
         {/* Main Glass Container - Refined Proportion */}
-        <div className=" h-full w-full max-w-[1600px] p:0 glass-dark flex overflow-hidden">
+        <div className="h-[92%] w-full  glass-dark flex overflow-hidden">
           
           <Sidebar 
             chats={chats} 
@@ -32,7 +37,7 @@ const Chat = () => {
             onAddFolder={handleAddFolder} 
           />
 
-          <main className="flex-1 flex flex-col relative bg-white/[0.02]">
+          <main className="flex-1 flex flex-col  -z-20 relative bg-white/[0.02]">
             <Routes>
               <Route path="/chat/:id" element={<ChatWindow />} />
               <Route path="*" element={
@@ -49,7 +54,7 @@ const Chat = () => {
           
         </div>
       </div>
-    </MemoryRouter>
+    </>
   );
 };
 

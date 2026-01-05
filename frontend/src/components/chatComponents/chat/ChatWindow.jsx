@@ -61,8 +61,8 @@ const ChatWindow = () => {
             >
               <div className={`max-w-[80%] px-6 py-4 rounded-[2rem] text-sm shadow-sm border ${
                 m.role === 'user' 
-                  ? 'bg-blue-600 text-white rounded-tr-none border-blue-400' 
-                  : 'bg-white/90 backdrop-blur-md text-slate-700 rounded-tl-none border-white/60'
+                  ? 'bg-blue-500 text-white rounded-tr-none border-blue-400/40' 
+                  : 'bg-neutral-300/90 backdrop-blur-md text-neutral-900 rounded-tl-none border-white/40'
               }`}>
                 {m.content}
               </div>
@@ -82,7 +82,7 @@ const ChatWindow = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && handleSend(e)}
-            placeholder="Ask anything..." 
+            placeholder="Write your symptoms..." 
             className="w-full bg-transparent border-none focus:ring-0 text-[15px] resize-none h-9 overflow-scroll [scrollbar-width:none] [&::-webkit-scrollbar]:hidden outline-none px-4 py-2"
           />
           <div className="flex justify-between items-center mt-2 px-2">
