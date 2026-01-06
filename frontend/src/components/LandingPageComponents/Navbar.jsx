@@ -1,12 +1,14 @@
-import React from 'react'
-import {
-  Menu,
-  X,
-} from "lucide-react";
+import React from "react";
+import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Navbar = ({ isMenuOpen, setIsMenuOpen, scrolled }) => (
-  <nav
+  <motion.nav
+    initial={{ y: -100, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    viewport={{ once: true }}
+    transition={{ type: "spring", stiffness: 250, damping: 70, mass: 1 }}
     className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 px-6 py-4 ${
       scrolled
         ? "bg-[#0B0C10]/80 backdrop-blur-lg border-b border-white/5"
@@ -35,11 +37,17 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, scrolled }) => (
       </div>
 
       <div className="hidden md:flex items-center gap-4">
-        <Link to="/login" className="text-sm font-semibold text-slate-300 hover:text-white transition-colors">
+        <Link
+          to="/login"
+          className="text-sm font-semibold text-slate-300 hover:text-white transition-colors"
+        >
           Login
         </Link>
 
-        <Link to="/register" className="bg-indigo-600/90 hover:bg-indigo-500 backdrop-blur-md text-white px-6 py-2.5 rounded-xl border border-indigo-400/30 text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all">
+        <Link
+          to="/register"
+          className="bg-indigo-600/90 hover:bg-indigo-500 backdrop-blur-md text-white px-6 py-2.5 rounded-xl border border-indigo-400/30 text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all"
+        >
           Get Started
         </Link>
       </div>
@@ -51,7 +59,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen, scrolled }) => (
         {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
     </div>
-  </nav>
+  </motion.nav>
 );
 
 export default Navbar;

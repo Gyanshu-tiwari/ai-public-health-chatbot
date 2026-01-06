@@ -65,10 +65,11 @@ const Register = () => {
         className="w-full max-w-[440px] relative z-10"
       >
         {/* Header Text - Left Aligned */}
-        <div className="text-center mb-10 px-2">
-          <h1 className="text-4xl font-bold text-white tracking-tight">
-            Sign Up
-          </h1>
+        <div className="text-left mb-10 px-2">
+          <h1 className="text-2xl font-bold text-white tracking-tight">Create account</h1>
+          <p className="text-slate-400 mt-2 text-sm leading-relaxed">
+            Join Aetheris and start your personalized health journey today.
+          </p>
         </div>
 
         {/* Signup Card */}

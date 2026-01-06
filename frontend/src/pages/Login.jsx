@@ -63,8 +63,11 @@ const Login = () => {
         className="w-full max-w-[440px] relative z-10"
       >
         {/* Header Text - Now Left Aligned */}
-        <div className="text-center mb-10 px-2">
-          <h1 className="text-4xl font-bold text-white tracking-tight">Sign In</h1>
+        <div className="text-left mb-10 px-2">
+          <h1 className="text-2xl font-bold text-white tracking-tight">Sign In</h1>
+           <p className="text-slate-400 mt-2 text-sm leading-relaxed">
+            Welcome back! Please sign in to continue
+          </p>
         </div>
 
         {/* Login Card */}
@@ -90,7 +93,7 @@ const Login = () => {
             <div className="space-y-2">
               <div className="flex justify-between items-center ml-1">
                 <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Password</label>
-                <button type="button" className="text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors uppercase tracking-wider">Forgot?</button>
+                <Link to="/forget-password" className="text-[11px] font-bold text-indigo-400 hover:text-indigo-300 transition-colors uppercase tracking-wider">Forgot?</Link>
               </div>
               <div className="relative group">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors" size={18} />
