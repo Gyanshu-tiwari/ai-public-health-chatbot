@@ -1,65 +1,50 @@
-import { getAIChatResponse } from '../services/aiService.js';
-
-/**
- * POST /api/chat
- * Handles incoming chat messages and returns AI-generated responses
- * Request body: { message: string, language: "en" | "hi" }
- * Response: { reply: string }
- */
-export const chat = async (req, res, next) => {
-  try {
-    const { message, language = 'en' } = req.body;
-
-    // Validation
-    if (!message || typeof message !== 'string') {
-      return res.status(400).json({
-        error: 'Invalid request. Please provide a message string.'
-      });
+  import Chat from "../models/chat.js";
+  // API controller for creating a new chat 
+  export const createChat = async (req, res) =>{
+    try{
+      console.log(req.user)
+      const userId = req.user._id
+      const chatData = {
+        userId ,
+        messages:[],
+        name : "New Chat",
+        userName: req.user.name
+      }
+      await Chat.create(chatData)
+      res.json({success:true, message:"Chat created succesfully"})
+    } catch (error) {
+      res.json({success:false, message: error.message});
+      
     }
 
-    if (!['en', 'hi'].includes(language)) {
-      return res.status(400).json({
-        error: 'Language must be "en" (English) or "hi" (Hindi)'
-      });
-    }
-
-    // Trim and check message length
-    const trimmedMessage = message.trim();
-    if (trimmedMessage.length === 0) {
-      return res.status(400).json({
-        error: 'Message cannot be empty'
-      });
-    }
-
-    if (trimmedMessage.length > 2000) {
-      return res.status(400).json({
-        error: 'Message is too long (max 2000 characters)'
-      });
-    }
-
-    // Get AI response
-    const reply = await getAIChatResponse(trimmedMessage, language);
-
-    res.json({ reply });
-
-  } catch (error) {
-    console.error('Chat controller error:', error.message);
-    
-    // Handle API errors gracefully
-    if (error.message.includes('API key')) {
-      return res.status(500).json({
-        error: 'API configuration error. Please contact support.'
-      });
-    }
-
-    if (error.message.includes('rate limit')) {
-      return res.status(429).json({
-        error: 'Too many requests. Please try again later.'
-      });
-    }
-
-    res.status(500).json({
-      error: 'Failed to generate response. Please try again.'
-    });
   }
-};
+
+  //API controller for getting all chats 
+  export const getChats = async (req, res) =>{
+    try{
+      const userId = req.user._id
+      const chats = await Chat.find({userId : userId}).sort({updatedAt : -1})
+      
+      res.json({success: true, chats})
+    } catch (error) {
+      res.json({success:false, message: error.message});
+
+    }
+
+  }
+
+    //API controller for deleting a chats 
+  export const deleteChat = async (req, res) =>{
+    try{
+      const userId = req.user._id
+      const {chatId} = req.body
+
+      await Chat.deleteOne({id:chatId, userId})
+      
+      res.json({success: true, message: "chat deleted"})
+    } catch (error) {
+      res.json({success:false, message: error.message});
+
+    }
+
+  }

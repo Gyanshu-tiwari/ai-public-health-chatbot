@@ -2,11 +2,11 @@
   "name": "public-health-chatbot-backend",
   "version": "1.0.0",
   "description": "AI-driven public health awareness chatbot backend",
-  "main": "src/app.js",
+  "main": "app.js",
   "type": "module",
   "scripts": {
-    "dev": "node src/app.js",
-    "start": "node src/app.js",
+    "dev": "node app.js",
+    "start": "node app.js",
     "test": "node --test"
   },
   "keywords": [
@@ -18,13 +18,17 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
     "axios": "^1.6.2",
-    "mongoose": "^7.6.0",
     "bcrypt": "^5.1.0",
-    "jsonwebtoken": "^9.0.2"
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "debug": "^4.4.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.6.0",
+    "nodemon": "^3.1.11",
+    "openai": "^6.15.0"
   },
   "devDependencies": {
     "supertest": "^6.3.3"

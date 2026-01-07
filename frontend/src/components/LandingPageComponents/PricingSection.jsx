@@ -18,8 +18,10 @@ const PricingSection = () => (
         <PricingCard
           title="Basic"
           price="0"
+          credits= "100"
           features={[
-            "Unlimited Chats",
+            "Limited Chats",
+            "Standard support",
             "Basic Health Logs",
             "Secure Data Storage",
           ]}
@@ -29,10 +31,11 @@ const PricingSection = () => (
           title="Pro"
           price="19"
           premium
+          credits="500"
           features={[
+            "500+ Chats",
             "AI Specialist Insights",
             "Wearable Sync",
-            "Priority Support",
             "Family Sharing",
           ]}
         />

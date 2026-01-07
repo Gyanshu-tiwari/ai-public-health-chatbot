@@ -1,29 +1,39 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
-import chatRoutes from './routes/chat.js';
-import telemedicineRoutes from './routes/telemedicine.js';
-import appointmentRoutes from './routes/appointments.js';
-import symptomRoutes from './routes/symptoms.js';
-import medicalDbRoutes from './routes/medical-db.js';
-import recordsRoutes from './routes/records.js';
-import insuranceRoutes from './routes/insurance.js';
-import authRoutes from './routes/auth.js';
-import { apiKeyAuth } from './middleware/auth.js';
-import connectDB from './config/db.js';
+import cookieParser from 'cookie-parser';
 
-// Load environment variables
+import dotenv from 'dotenv';
 dotenv.config();
 
+import chatRoutes from './src/routes/chat.js';
+import telemedicineRoutes from './src/routes/telemedicine.js';
+import appointmentRoutes from './src/routes/appointments.js';
+import symptomRoutes from './src/routes/symptoms.js';
+import medicalDbRoutes from './src/routes/medical-db.js';
+import recordsRoutes from './src/routes/records.js';
+import insuranceRoutes from './src/routes/insurance.js';
+import messageRoutes from './src/routes/message.js';
+import authRoutes from './src/routes/auth.js';
+import { apiKeyAuth } from './src/middleware/auth.js';
+import connectDB from './src/config/db.js';
+
+
+
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   credentials: true
 }));
+
+app.get('/', (req, res) => {
+  res.send('Welcome to the Health Chatbot API');
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -44,11 +54,12 @@ app.get('/api/health', (req, res) => {
 
 // Public API Routes
 app.use('/api/auth', authRoutes);
-app.use('/api', chatRoutes);
+app.use('/api/chat', chatRoutes);
 app.use('/api/symptoms', symptomRoutes);
 app.use('/api/medical-db', medicalDbRoutes);
 
 // Protected API Routes (require API key)
+app.use('/api/message',messageRoutes)
 app.use('/api/telemedicine', apiKeyAuth, telemedicineRoutes);
 app.use('/api/appointments', apiKeyAuth, appointmentRoutes);
 app.use('/api/records', apiKeyAuth, recordsRoutes);

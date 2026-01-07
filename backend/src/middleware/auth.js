@@ -2,7 +2,7 @@
 // Protects sensitive health endpoints (records, telemedicine, insurance, etc.)
 
 export const apiKeyAuth = (req, res, next) => {
-  const configuredKey = process.env.API_KEY;
+  const configuredKey = process.env.GEMINI_API_KEY;
 
   if (!configuredKey) {
     return res.status(500).json({
@@ -21,15 +21,7 @@ export const apiKeyAuth = (req, res, next) => {
   return next();
 };
 
-export default isLoggedIn = ((req, res, next)=>{
-  
-  // If user is authenticated in the session, carry on
-  if (req.session && req.session.user) {
-    return next();
-  }
-  // If they aren't, redirect them to the login page
-  res.redirect('/login');
-});
+
 
 
 

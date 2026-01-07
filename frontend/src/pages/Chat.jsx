@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from "../components/chatComponents/Navbar.jsx";
 import Sidebar from '../components/chatComponents/layout/SideBar';
 import ChatWindow from '../components/chatComponents/chat/ChatWindow';
-import { MemoryRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 
 const Chat = () => {
@@ -50,7 +50,7 @@ const Chat = () => {
                 </div>
               } />
             </Routes>
-          </main>
+          </main> 
           
         </div>
       </div>
