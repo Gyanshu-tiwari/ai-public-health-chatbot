@@ -6,15 +6,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import chatRoutes from './src/routes/chat.js';
-import telemedicineRoutes from './src/routes/telemedicine.js';
-import appointmentRoutes from './src/routes/appointments.js';
-import symptomRoutes from './src/routes/symptoms.js';
-import medicalDbRoutes from './src/routes/medical-db.js';
-import recordsRoutes from './src/routes/records.js';
-import insuranceRoutes from './src/routes/insurance.js';
 import messageRoutes from './src/routes/message.js';
 import authRoutes from './src/routes/auth.js';
-import { apiKeyAuth } from './src/middleware/auth.js';
 import connectDB from './src/config/db.js';
 
 
@@ -55,15 +48,9 @@ app.get('/api/health', (req, res) => {
 // Public API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
-app.use('/api/symptoms', symptomRoutes);
-app.use('/api/medical-db', medicalDbRoutes);
 
 // Protected API Routes (require API key)
 app.use('/api/message',messageRoutes)
-app.use('/api/telemedicine', apiKeyAuth, telemedicineRoutes);
-app.use('/api/appointments', apiKeyAuth, appointmentRoutes);
-app.use('/api/records', apiKeyAuth, recordsRoutes);
-app.use('/api/insurance', apiKeyAuth, insuranceRoutes);
 
 // 404 handler
 app.use((req, res) => {

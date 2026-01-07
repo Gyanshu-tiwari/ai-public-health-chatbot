@@ -1,4 +1,2 @@
 node_modules
 .env
-src/config/development.json
-src/config/production.json
