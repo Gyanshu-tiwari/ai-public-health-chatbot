@@ -1,5 +1,5 @@
 import express from 'express';
-import { isLoggedIn } from '../middleware/isLoggedIn.js';
+import { isLoggedIn } from '../middleware/authMiddleware.js';
 import { textMessageController } from '../controllers/messageController.js';
 
 const router = express.Router()
