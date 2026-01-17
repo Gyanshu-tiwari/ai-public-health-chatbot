@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/chatComponents/SideBar";
 import ChatWindow from "../components/chatComponents/ChatWindow";
 import { Menu } from "lucide-react";
-import "../assets/prism.css";
 import Login from "./Login";
+import { useAppContext } from "../context/AppProvider";
+
 const Chat = (props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, chats, createNewChat, selectedChat } = useAppContext();
+
+  // 🔥 AUTO CREATE FIRST CHAT
+  useEffect(() => {
+    if (user && chats.length === 0) {
+      createNewChat(true); // silent create
+    }
+  }, [user, chats]);
+
   return (
     <>
-
       {!isMenuOpen && (
         <Menu
           size={20}
@@ -16,8 +25,8 @@ const Chat = (props) => {
           onClick={() => setIsMenuOpen(true)}
         />
       )}
-      
-      {props.user ? (
+
+      {user ? (
         <div className="bg-gradient-to-br from-[#242124] to-[#000000] flex h-screen w-full overflow-y-hidden">
           <Sidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
           <ChatWindow />

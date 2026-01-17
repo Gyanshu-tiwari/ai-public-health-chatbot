@@ -1,5 +1,5 @@
 import userModel from "../models/user.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer"
 import { generateToken } from "../utils/generateToken.js";
 import {sendEmail} from "../utils/sendEmail.js"

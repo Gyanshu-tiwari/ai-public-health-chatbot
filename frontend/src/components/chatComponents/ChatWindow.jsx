@@ -19,6 +19,7 @@ const ChatWindow = () => {
     try {
       e.preventDefault();
       if (!user) return toast("login to send Message");
+      if (!selectedChat) return toast("Preparing chat...");
       setLoading(true);
       const promptCopy = prompt;
       setprompt("");
