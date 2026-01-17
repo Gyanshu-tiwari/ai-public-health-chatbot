@@ -84,40 +84,81 @@ backend/
 
 ---
 
-## ⚡ Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
-
 - **Java 17+** - [Download JDK](https://adoptium.net/)
 - **Maven 3.6+** - [Download Maven](https://maven.apache.org/download.cgi)
 - **MongoDB** - [Install MongoDB](https://www.mongodb.com/try/download/community)
-- **OpenAI API Key** - [Get key](https://platform.openai.com/api-keys)
 
 ### Backend Setup
 
-1. **Clone and Navigate**
+1. **Navigate to Backend**
    ```bash
    cd backend
    ```
 
-2. **Configure Environment Variables**
+2. **Set Environment Variables**
    Copy `.env.example` to `.env` and update:
    ```env
-   PORT=8080
-   MONGODB_URI=mongodb://localhost:27017/health-chatbot
-   JWT_KEY=your-secret-key-here
-   FRONTEND_URL=http://localhost:5173
-   MY_EMAIL=your-email@gmail.com
-   MY_PASSWORD=your-app-password
-   GEMINI_API_KEY=your-gemini-api-key
+   MY_EMAIL=gyanshut007@gmail.com
+   MY_PASSWORD=ftud vjzk ipta rweu
+   GEMINI_API_KEY=AIzaSyAQiDDiLaW4TdFWduslXV0amI6KUkug6RE
    ```
 
-3. **Install Dependencies and Run**
+3. **Run Application**
+   
+   **Option A: Using startup script (Recommended)**
    ```bash
-   mvn clean install
-   mvn spring-boot:run
+   # Windows
+   start.bat
+   
+   # PowerShell
+   start.ps1
    ```
-   Server runs on `http://localhost:8080`
+   
+   **Option B: Manual with environment variables**
+   ```bash
+   # Windows CMD
+   set MY_EMAIL=gyanshut007@gmail.com && set MY_PASSWORD="ftud vjzk ipta rweu" && set GEMINI_API_KEY=AIzaSyAQiDDiLaW4TdFWduslXV0amI6KUkug6RE" && mvn spring-boot:run
+   
+   # PowerShell
+   $env:MY_EMAIL="gyanshut007@gmail.com"; $env:MY_PASSWORD="ftud vjzk ipta rweu"; $env:GEMINI_API_KEY="AIzaSyAQiDDiLaW4TdFWduslXV0amI6KUkug6RE"; mvn spring-boot:run
+   ```
+
+4. **Verify Application**
+   - Backend runs on: `http://localhost:8080/api`
+   - Health check: `http://localhost:8080/api/health`
+   - API docs: `http://localhost:8080/api/health-data/diseases`
+
+### Frontend Setup
+
+1. **Navigate to Frontend**
+   ```bash
+   cd frontend
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start Frontend**
+   ```bash
+   npm run dev
+   ```
+
+4. **Access Application**
+   - Frontend runs on: `http://localhost:5174`
+   - Full application: `http://localhost:5174`
+
+### ✅ Verification
+
+Both services should be running:
+- 🟢 **Backend**: `http://localhost:8080/api` (Java Spring Boot)
+- 🟢 **Frontend**: `http://localhost:5174` (React Vite)
+
+Test the connection by visiting `http://localhost:5174` and checking if the app loads properly.
 
 ---
 
