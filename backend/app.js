@@ -1,9 +1,10 @@
-import express from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
 
 import dotenv from 'dotenv';
 dotenv.config();
+
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 import chatRoutes from './src/routes/chat.js';
 import messageRoutes from './src/routes/message.js';

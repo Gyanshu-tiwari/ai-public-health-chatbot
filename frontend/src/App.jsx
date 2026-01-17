@@ -8,6 +8,7 @@ import ResetPassword from "./pages/ResetPassword.jsx";
 import { Routes, Route } from "react-router-dom";
 import { useAppContext } from "./context/AppProvider.jsx";
 import { Toaster } from 'react-hot-toast'
+import OTPInput from "./pages/OTPInput.jsx";
 
 const App = () => {
    const {user,loadingUser} = useAppContext()
@@ -21,6 +22,7 @@ const App = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/forget-password" element={<ForgetPassword />} />
       <Route path="/reset-password" element={<ResetPassword />}/>
+      <Route path="/otp-input" element={<OTPInput />}/>
     </Routes>
     </>
   );

@@ -8,23 +8,23 @@ const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
 
-  // 🔐 Auth state
+  /* ================= AUTH STATE ================= */
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
-  // 💬 Chat state
+  /* ================= CHAT STATE ================= */
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
 
   /* ================= FETCH LOGGED-IN USER ================= */
   const fetchUser = async () => {
     try {
-      const { data } = await api.get("/api/auth/me",{headers:{Authorization: token}});
+      const { data } = await api.get("/api/auth/me");
       setUser(data.user);
-    } catch (error) {
-      // ❌ Token invalid / expired
-      logout(false);
+    } catch {
+      // ❗ Do NOT logout here (OTP/reset flow needs this)
+      setUser(null);
     } finally {
       setLoadingUser(false);
     }
@@ -32,20 +32,27 @@ export const AppContextProvider = ({ children }) => {
 
   /* ================= FETCH USER CHATS ================= */
   const fetchUserChats = async () => {
+    if (!user) return;
+
     try {
-      const { data } = await api.get("/api/chat/get",{headers:{Authorization:'Bearer',token}});
+      const { data } = await api.get("/api/chat/get");
       setChats(data.chats || []);
       setSelectedChat(data.chats?.[0] || null);
-    } catch (error) {
-      toast.error("Failed to load chats",error.message);
+    } catch {
+      toast.error("Failed to load chats");
     }
   };
 
   /* ================= CREATE NEW CHAT ================= */
   const createNewChat = async () => {
     if (!user) return toast.error("Please login first");
-    await api.get("/api/chat/create",{headers:{Authorization:token}});
-    fetchUserChats();
+
+    try {
+      await api.get("/api/chat/create");
+      fetchUserChats();
+    } catch {
+      toast.error("Failed to create chat");
+    }
   };
 
   /* ================= LOGOUT ================= */
@@ -60,45 +67,44 @@ export const AppContextProvider = ({ children }) => {
     if (redirect) navigate("/login");
   };
 
-  /* ================= AUTO LOGIN ON REFRESH ================= */
+  /* ================= AUTO LOGIN ================= */
   useEffect(() => {
     if (token) {
       fetchUser();
     } else {
-      setUser(null)
+      setUser(null);
       setLoadingUser(false);
     }
   }, [token]);
 
-  /* ================= LOAD CHATS WHEN USER IS READY ================= */
+  /* ================= LOAD CHATS ================= */
   useEffect(() => {
-    if (user) {
+    if (user && token) {
       fetchUserChats();
+    } else {
+      setChats([]);
+      setSelectedChat(null);
     }
-    else{
-      setChats([])
-      setSelectedChat(null)
-    }
-  }, [user]);
+  }, [user, token]);
 
   return (
     <AppContext.Provider
       value={{
-        // auth
+        /* auth */
         user,
         setUser,
         token,
         setToken,
-        fetchUser,
         loadingUser,
+        fetchUser,
         logout,
+        navigate,
 
-        // chats
-        
+        /* chats */
         chats,
         selectedChat,
-        fetchUserChats,
         setSelectedChat,
+        fetchUserChats,
         createNewChat,
       }}
     >

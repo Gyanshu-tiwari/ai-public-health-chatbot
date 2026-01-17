@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAppContext } from "../context/AppProvider.jsx";
 import toast from "react-hot-toast";
 import api from "../../utils/api";
@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const { setToken } = useAppContext();
+  
+  const { setToken, navigate } = useAppContext();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +28,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError("");
+   
 
     try {
       const { data } = await api.post("/api/auth/login", {
@@ -47,9 +47,7 @@ const Login = () => {
       }
     } catch (err) {
       const msg =
-        err.response?.data?.error ||
-        err.response?.data?.message ||
-        err.message;
+        err.response?.data?.error || err.response?.data?.message || err.message;
 
       setError(msg);
       toast.error(msg);
@@ -99,6 +97,16 @@ const Login = () => {
               placeholder="Email address"
               className="w-full pl-12 pr-4 py-3 rounded-xl bg-black/30 text-white outline-none"
             />
+          </div>
+
+          {/* forget password */}
+          <div className="w-full flex">
+            <Link
+              to="/forget-password"
+              className="ml-auto text-indigo-500 text-md "
+            >
+              Forget Password?
+            </Link>
           </div>
 
           {/* Password */}

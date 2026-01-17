@@ -1,179 +1,90 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  Mail,
-  ArrowRight,
-  ChevronLeft,
-  AlertCircle,
-  CheckCircle2,
-  Activity,
-} from "lucide-react";
-import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import api from "../../utils/api";
+import { Mail, ArrowRight, ChevronLeft, AlertCircle } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
-const App = () => {
+const ForgetPassword = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     setError("");
+    setIsLoading(true);
 
-    // Simulate Password Reset API Call
-    setTimeout(() => {
-      if (email.includes("error")) {
-        setError("No account found with this email address.");
-        setIsLoading(false);
-      } else {
-        setIsSubmitted(true);
-        setIsLoading(false);
+    try {
+      const { data } = await api.post("/api/auth/send-otp", {
+        recipient_email: email, // ✅ FIXED
+      });
+
+      if (data.success) {
+        toast.success(data.message || "OTP sent to your email");
+        navigate("/otp-input", { state: { email } });
       }
-    }, 1500);
+    } catch (err) {
+      const msg =
+        err.response?.data?.message || "User not found";
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0C10] flex items-center justify-center p-6 relative overflow-hidden font-sans selection:bg-indigo-500/30 text-slate-200">
-      {/* Background Orbs */}
-      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-600/20 blur-[120px] rounded-full animate-pulse" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/10 blur-[120px] rounded-full animate-pulse" />
-
-      {/* Navigation Back */}
-      <Link to="/login">
-        <motion.button
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="absolute top-8 left-8 flex items-center gap-2 text-slate-500 hover:text-white transition-colors group"
-        >
-          <ChevronLeft
-            size={20}
-            className="group-hover:-translate-x-1 transition-transform"
-          />
-          <span className="text-sm font-medium">Back to login</span>
-        </motion.button>
-      </Link>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-[440px] relative z-10"
+    <div className="min-h-screen bg-[#0B0C10] flex items-center justify-center p-6">
+      <Link
+        to="/login"
+        className="absolute top-8 left-8 flex items-center gap-2 text-slate-400"
       >
-        <AnimatePresence mode="wait">
-          {!isSubmitted ? (
-            <motion.div
-              key="request-form"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-            >
-              {/* Header Text - Adjusted Sizes */}
-              <div className="text-left mb-10 px-2">
-                <h1 className="text-2xl font-bold text-white tracking-tight">
-                  Forget password
-                </h1>
-                <p className="text-slate-400 mt-2 text-sm leading-relaxed">
-                  Enter your email and we'll send you a link to reset your
-                  password.
-                </p>
-              </div>
+        <ChevronLeft size={18} /> Back
+      </Link>
 
-              {/* Forgot Password Card */}
-              <div className="bg-white/[0.03] backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 md:p-10 shadow-2xl shadow-black/50">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Email Field */}
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 ml-1">
-                      Email Address
-                    </label>
-                    <div className="relative group">
-                      <Mail
-                        className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-indigo-400 transition-colors"
-                        size={18}
-                      />
-                      <input
-                        type="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="name@company.com"
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/50 transition-all text-sm"
-                      />
-                    </div>
-                  </div>
+      <motion.div className="w-full max-w-[420px]">
+        <h1 className="text-2xl font-bold text-white mb-2">
+          Forgot password
+        </h1>
+        <p className="text-slate-400 mb-6 text-sm">
+          Enter your email to receive a verification code
+        </p>
 
-                  {/* Error Message */}
-                  <AnimatePresence>
-                    {error && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="flex items-center gap-2 text-rose-400 text-xs bg-rose-400/10 p-3 rounded-xl border border-rose-400/20"
-                      >
-                        <AlertCircle size={14} />
-                        {error}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5 bg-white/5 p-8 rounded-3xl"
+        >
+          <div className="relative">
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email address"
+              className="w-full pl-12 py-3 bg-black/30 text-white rounded-xl outline-none"
+            />
+          </div>
 
-                  {/* Submit Button */}
-                  <button
-                    disabled={isLoading}
-                    className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 disabled:cursor-not-allowed text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-xl shadow-indigo-500/20 group relative overflow-hidden text-sm"
-                  >
-                    {isLoading ? (
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        Send Reset Link{" "}
-                        <ArrowRight
-                          size={18}
-                          className="group-hover:translate-x-1 transition-transform"
-                        />
-                      </>
-                    )}
-                  </button>
-                </form>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="success-message"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center"
-            >
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl mb-6">
-                <CheckCircle2 className="text-emerald-400" size={32} />
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-3">
-                Check your email
-              </h2>
-              <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                We've sent a password reset link to{" "}
-                <span className="text-white font-semibold">{email}</span>.
-                Please check your inbox.
-              </p>
-
-              <button
-                onClick={() => setIsSubmitted(false)}
-                className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white py-4 rounded-2xl font-bold transition-all text-sm"
-              >
-                Back to reset
-              </button>
-
-              <p className="mt-8 text-xs text-slate-500">
-                Didn't receive the email?{" "}
-                <button className="text-indigo-400 font-bold hover:text-indigo-300 transition-colors uppercase tracking-widest text-[10px]">
-                  Resend Link
-                </button>
-              </p>
-            </motion.div>
+          {error && (
+            <div className="flex items-center gap-2 text-red-400 text-sm">
+              <AlertCircle size={16} /> {error}
+            </div>
           )}
-        </AnimatePresence>
+
+          <button
+            disabled={isLoading}
+            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl flex justify-center items-center gap-2 font-semibold"
+          >
+            {isLoading ? "Sending..." : "Send OTP"}
+            <ArrowRight size={16} />
+          </button>
+        </form>
       </motion.div>
     </div>
   );
 };
 
-export default App;
+export default ForgetPassword;
