@@ -45,7 +45,7 @@ const ChatWindow = () => {
         setprompt(promptCopy);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     } finally {
       setprompt("");
       setLoading(false);

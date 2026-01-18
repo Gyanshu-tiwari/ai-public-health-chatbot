@@ -33,29 +33,36 @@ public class MessageController {
 
     @PostMapping("/text")
     public ResponseEntity<?> sendMessage(@RequestHeader("Authorization") String token,
-                                       @Valid @RequestBody MessageRequest messageRequest) {
+            @Valid @RequestBody MessageRequest messageRequest) {
         try {
+            System.out.println("Received message request: " + messageRequest.getPrompt() + " for chat: "
+                    + messageRequest.getChatId());
             String userId = userService.getUserIdFromToken(token);
-            
+            System.out.println("User ID resolved: " + userId);
+
             // Check credits
             if (!userService.hasSufficientCredits(userId, 1)) {
+                System.out.println("Insufficient credits for user: " + userId);
                 Map<String, String> error = new HashMap<>();
                 error.put("success", "false");
                 error.put("message", "You don't have enough credits");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
             }
-            
+
             MessageResponse response = messageService.processMessage(userId, messageRequest);
-            
+            System.out.println("Message processed successfully");
+
             // Deduct credits
             userService.deductCredits(userId, 1);
-            
+
             Map<String, Object> result = new HashMap<>();
             result.put("success", "true");
             result.put("reply", response.getReply());
-            
+
             return ResponseEntity.ok(result);
         } catch (Exception e) {
+            System.err.println("Error processing message: " + e.getMessage());
+            e.printStackTrace();
             Map<String, String> error = new HashMap<>();
             error.put("success", "false");
             error.put("message", e.getMessage());
