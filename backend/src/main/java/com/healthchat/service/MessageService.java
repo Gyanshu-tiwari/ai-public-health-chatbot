@@ -1,15 +1,16 @@
 package com.healthchat.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.healthchat.dto.MessageRequest;
 import com.healthchat.dto.MessageResponse;
 import com.healthchat.model.Chat;
 import com.healthchat.repository.ChatRepository;
 import com.healthchat.service.openai.OpenAIService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Service
 public class MessageService {
@@ -38,7 +39,8 @@ public class MessageService {
         chat.getMessages().add(userMessage);
 
         // Get AI response
-        String aiResponse = openAIService.generateResponse(messageRequest.getPrompt());
+        // String aiResponse = openAIService.generateResponse(messageRequest.getPrompt());
+        String aiResponse = "Mock AI response: " + messageRequest.getPrompt();
 
         // Add AI message
         Chat.Message aiMessage = new Chat.Message();

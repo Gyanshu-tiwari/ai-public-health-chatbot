@@ -69,6 +69,9 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String token) {
         try {
+            if (token != null && token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
             var user = authService.getCurrentUser(token);
             Map<String, Object> response = new HashMap<>();
             response.put("success", "true");
