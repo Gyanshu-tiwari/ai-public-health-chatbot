@@ -30,7 +30,7 @@ const ChatWindow = () => {
 
       const { data } = await api.post(
         `/api/message/text`,
-        { chatId: selectedChat._id, prompt },
+        { chatId: selectedChat.id || selectedChat._id, prompt },
         { headers: { Authorization: token } }
       );
       if (data.success) {

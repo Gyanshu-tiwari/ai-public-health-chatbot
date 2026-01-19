@@ -16,7 +16,7 @@ REM )
 REM Set environment variables
 set MY_EMAIL=gyanshut007@gmail.com
 set MY_PASSWORD=ftud vjzk ipta rweu
-set GEMINI_API_KEY=AIzaSyAQiDDiLaW4TdFWduslXV0amI6KUkug6RE
+set GEMINI_API_KEY=AIzaSyCjqBUK8T8ycYT6g-WgsWcpGUA43x9tJ6g
 set JWT_KEY=mySuperSecretKeyForJWTTokenGenerationThatIsAtLeast256BitsLongForSecurity1234567890
 
 REM Start the application using simple POM

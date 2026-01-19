@@ -10,7 +10,7 @@ import com.healthchat.dto.MessageRequest;
 import com.healthchat.dto.MessageResponse;
 import com.healthchat.model.Chat;
 import com.healthchat.repository.ChatRepository;
-import com.healthchat.service.openai.OpenAIService;
+import com.healthchat.service.gemini.GeminiService;
 
 @Service
 public class MessageService {
@@ -19,7 +19,7 @@ public class MessageService {
     private ChatRepository chatRepository;
 
     @Autowired
-    private OpenAIService openAIService;
+    private GeminiService geminiService;
 
     public MessageResponse processMessage(String userId, MessageRequest messageRequest) {
         // Find chat
@@ -39,8 +39,7 @@ public class MessageService {
         chat.getMessages().add(userMessage);
 
         // Get AI response
-        // String aiResponse = openAIService.generateResponse(messageRequest.getPrompt());
-        String aiResponse = "Mock AI response: " + messageRequest.getPrompt();
+        String aiResponse = geminiService.generateResponse(messageRequest.getPrompt());
 
         // Add AI message
         Chat.Message aiMessage = new Chat.Message();

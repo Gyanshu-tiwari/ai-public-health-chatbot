@@ -16,7 +16,7 @@ if ($portCheck) {
 # Set environment variables
 $env:MY_EMAIL = "gyanshut007@gmail.com"
 $env:MY_PASSWORD = "ftud vjzk ipta rweu"
-$env:GEMINI_API_KEY = "AIzaSyAQiDDiLaW4TdFWduslXV0amI6KUkug6RE"
+$env:GEMINI_API_KEY = "AIzaSyCjqBUK8T8ycYT6g-WgsWcpGUA43x9tJ6g"
 $env:JWT_KEY = "mySuperSecretKeyForJWTTokenGenerationThatIsAtLeast256BitsLongForSecurity1234567890"
 
 # Start the application

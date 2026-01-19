@@ -8,6 +8,7 @@ D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\config\JwtAuthe
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\controller\ChatController.java
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\repository\ChatRepository.java
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\dto\AuthResponse.java
+D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\service\gemini\GeminiService.java
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\service\MessageService.java
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\dto\UserDTO.java
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\repository\UserRepository.java
@@ -27,6 +28,7 @@ D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\model\HealthDat
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\dto\LoginRequest.java
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\dto\OTPVerifyRequest.java
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\dto\ResetPasswordRequest.java
+D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\controller\TestController.java
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\HealthChatApplication.java
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\controller\AuthController.java
 D:\ai-public-health-chatbot\backend\src\main\java\com\healthchat\dto\MessageRequest.java

@@ -1,5 +1,6 @@
 com\healthchat\service\openai\OpenAIService.class
 com\healthchat\controller\HealthController.class
+com\healthchat\service\gemini\GeminiService.class
 com\healthchat\dto\MessageRequest.class
 com\healthchat\dto\LoginRequest.class
 com\healthchat\config\SecurityConfig.class
@@ -21,6 +22,7 @@ com\healthchat\controller\ChatController.class
 com\healthchat\config\WebConfig.class
 com\healthchat\dto\UserDTO.class
 com\healthchat\model\HealthData$PreventionTips.class
+com\healthchat\controller\TestController.class
 com\healthchat\dto\AuthResponse.class
 com\healthchat\service\MessageService.class
 com\healthchat\model\Chat.class
