@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,20 +16,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class GeminiService {
 
+    @Value("${openai.api.key}")
     private String apiKey;
 
     private final ObjectMapper objectMapper;
 
     public GeminiService(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        // Temporary hardcoded API key for testing
-        this.apiKey = "AIzaSyCjqBUK8T8ycYT6g-WgsWcpGUA43x9tJ6g";
     }
 
     public String generateResponse(String prompt) {
         try {
+            if (apiKey == null || apiKey.trim().isEmpty()) {
+                System.err.println("Gemini API key is null or empty");
+                return "AI service is not properly configured. Please contact administrator.";
+            }
+            
+            System.out.println("=== GEMINI API DEBUG ===");
             System.out.println("Gemini API Key: " + (apiKey != null ? "Present" : "NULL"));
             System.out.println("Gemini API Key Length: " + (apiKey != null ? apiKey.length() : 0));
+            System.out.println("Gemini API Key First 10 chars: " + (apiKey != null && apiKey.length() > 10 ? apiKey.substring(0, 10) + "..." : "N/A"));
             
             String requestBody = buildRequestBody(prompt);
             System.out.println("Request Body: " + requestBody);
@@ -39,6 +46,8 @@ public class GeminiService {
             
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(30000); // 30 seconds timeout
+            connection.setReadTimeout(30000); // 30 seconds timeout
             connection.setDoOutput(true);
             
             // Send request
@@ -53,7 +62,7 @@ public class GeminiService {
             
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader br = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+                        new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
                 
                 StringBuilder response = new StringBuilder();
                 String responseLine;
@@ -63,26 +72,48 @@ public class GeminiService {
                 br.close();
                 
                 System.out.println("Gemini API Response: " + response.toString());
-                return extractResponse(response.toString());
+                String result = extractResponse(response.toString());
+                System.out.println("Extracted Response: " + result);
+                System.out.println("=== END GEMINI API DEBUG ===");
+                return result;
             } else {
                 // Read error response
-                BufferedReader errorBr = new BufferedReader(
-                    new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8));
+                String errorResponse = readErrorResponse(connection);
+                System.out.println("Gemini API Error Response: " + errorResponse);
                 
-                StringBuilder errorResponse = new StringBuilder();
-                String errorLine;
-                while ((errorLine = errorBr.readLine()) != null) {
-                    errorResponse.append(errorLine.trim());
+                // Handle specific error cases
+                if (responseCode == 403) {
+                    return "AI service access is denied. Please check API key configuration.";
+                } else if (responseCode == 429) {
+                    return "AI service is temporarily unavailable due to rate limits. Please try again in a few moments.";
+                } else if (responseCode >= 500) {
+                    return "AI service is temporarily unavailable. Please try again later.";
+                } else {
+                    return "AI service returned an error. Please try again later.";
                 }
-                errorBr.close();
-                
-                System.out.println("Gemini API Error Response: " + errorResponse.toString());
-                return "I apologize, but the AI service returned an error. Please try again later.";
             }
             
         } catch (Exception e) {
             System.err.println("Error calling Gemini API: " + e.getMessage());
-            return "I apologize, but I'm having trouble connecting to the AI service right now. Please try again later.";
+            e.printStackTrace();
+            return "I'm having trouble connecting to the AI service right now. Please try again later.";
+        }
+    }
+    
+    private String readErrorResponse(HttpURLConnection connection) {
+        try {
+            BufferedReader errorBr = new BufferedReader(
+                    new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8));
+            
+            StringBuilder errorResponse = new StringBuilder();
+            String errorLine;
+            while ((errorLine = errorBr.readLine()) != null) {
+                errorResponse.append(errorLine.trim());
+            }
+            errorBr.close();
+            return errorResponse.toString();
+        } catch (Exception e) {
+            return "Error reading error response: " + e.getMessage();
         }
     }
 
