@@ -616,8 +616,115 @@ MIT License - Use freely in your projects
 
 ---
 
-**Built with ❤️ for health awareness and public good**
+## 📈 Performance & Monitoring
 
-**Version:** 2.0 - Advanced Healthcare Features  
-**Status:** ✅ Production Ready  
-**Last Updated:** January 2, 2026
+### Optimization Features
+- **Connection Pooling**: Database connection optimization
+- **Response Caching**: API response caching where appropriate
+- **Error Handling**: Comprehensive error management
+- **Input Validation**: Prevents invalid requests
+- **Rate Limiting**: Protection against API abuse
+
+### Monitoring Recommendations
+- **Application Logs**: Track errors and performance
+- **API Response Times**: Monitor AI service latency
+- **Database Performance**: Query optimization indexes
+- **User Metrics**: Track usage patterns
+
+---
+
+## 🔒 Security Considerations
+
+### Implemented Security Measures
+- **Input Validation**: All user inputs validated
+- **Password Encryption**: BCrypt hashing for stored passwords
+- **JWT Security**: Time-limited tokens with secure signing
+- **CORS Configuration**: Controlled cross-origin access
+- **API Key Protection**: Environment variable storage
+- **SQL Injection Prevention**: Parameterized queries
+- **XSS Protection**: Input sanitization and output encoding
+
+### Security Best Practices
+- **Never commit API keys** to version control
+- **Use environment variables** for sensitive configuration
+- **Regular security updates** for all dependencies
+- **HTTPS in production** for all communications
+- **Regular security audits** and penetration testing
+
+---
+
+## 🤝 Contributing
+
+### Development Guidelines
+1. **Fork** the repository
+2. **Create feature branch** from main
+3. **Make changes** following existing code patterns
+4. **Test thoroughly** before submitting
+5. **Submit pull request** with clear description
+
+### Code Standards
+- **Java**: Follow Spring Boot conventions
+- **React**: Use functional components and hooks
+- **Comments**: Add clear documentation for complex logic
+- **Testing**: Include unit tests for new features
+- **Security**: Never expose sensitive data
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 📞 Support
+
+### Getting Help
+- **Documentation**: Check this README and code comments
+- **Issues**: Report bugs via GitHub Issues
+- **Features**: Request features via GitHub Discussions
+- **Security**: Report security concerns privately
+
+### Contact Information
+- **Project Repository**: [GitHub Repository Link]
+- **Documentation**: [Wiki/Docs Link]
+- **Issues**: [Issues Page Link]
+
+---
+
+## 🎯 Roadmap
+
+### Upcoming Features
+- **Multi-language Support**: Extended language capabilities
+- **File Upload**: Document and image sharing in chats
+- **Voice Input**: Speech-to-text integration
+- **Mobile Apps**: React Native and Flutter applications
+- **Advanced Analytics**: User behavior insights
+- **API Rate Limiting**: Enhanced abuse prevention
+- **Database Optimization**: Improved query performance
+
+---
+
+## 🏆 Current Status
+
+**Version**: 2.0 - Advanced Healthcare Features  
+**Last Updated**: January 2, 2026  
+**Status**: ✅ Production Ready
+
+### ✅ Working Features
+- **User Authentication**: Registration and login fully functional
+- **AI Chat Service**: Gemini API integration with syntax highlighting
+- **CORS Configuration**: Properly configured for cross-origin requests
+- **Error Handling**: Comprehensive error management
+- **Database Integration**: MongoDB with chat persistence
+- **Security**: JWT authentication with proper validation
+
+### 🚀 Quick Start Summary
+1. **Get Gemini API Key**: [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. **Set Environment**: Configure `GEMINI_API_KEY` environment variable
+3. **Start Backend**: `mvn spring-boot:run -f pom-simple.xml`
+4. **Start Frontend**: `npm run dev`
+5. **Access Application**: Open `http://localhost:5173`
+6. **Register & Chat**: Create account and start chatting!
+
+**🎉 Your AI health chatbot is ready to use!**
