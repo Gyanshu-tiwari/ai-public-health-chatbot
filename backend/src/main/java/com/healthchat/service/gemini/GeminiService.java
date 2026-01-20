@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class GeminiService {
 
-    @Value("${openai.api.key}")
+    @Value("${GEMINI_API_KEY}")
     private String apiKey;
 
     private final ObjectMapper objectMapper;
