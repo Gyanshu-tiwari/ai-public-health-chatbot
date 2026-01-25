@@ -962,7 +962,7 @@ const ORSAppointmentBooking = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-20">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
             {/* Progress Steps */}
             <div className="bg-gray-800/50 px-6 py-4 border-b border-gray-700">
