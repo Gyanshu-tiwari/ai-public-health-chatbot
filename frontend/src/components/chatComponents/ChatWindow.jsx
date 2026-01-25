@@ -5,7 +5,7 @@ import QuickAppointmentBooking from "../QuickAppointmentBooking";
 import sendIcon from "../../assets/send_icon.svg";
 import stopIcon from "../../assets/stop_icon.svg";
 import toast from "react-hot-toast";
-import api from "../../../utils/api";
+import api from "../../utils/api";
 
 const ChatWindow = () => {
   const containerRef = useRef(null);
@@ -95,7 +95,7 @@ const ChatWindow = () => {
         {messages.map((message, index) => (
           <MessageItems key={index} message={message} />
         ))}
-        
+
         {/* Quick Appointment Booking */}
         <QuickAppointmentBooking />
 

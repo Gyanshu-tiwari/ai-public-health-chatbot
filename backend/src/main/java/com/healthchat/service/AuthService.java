@@ -24,8 +24,8 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // @Autowired
-    // private EmailService emailService;
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -96,7 +96,7 @@ public class AuthService {
         userRepository.save(user);
 
         // Send email
-        // emailService.sendOTPEmail(recipientEmail, otp);
+        emailService.sendOTPEmail(recipientEmail, otp);
     }
 
     public void verifyRecoveryOTP(String recipientEmail, String otp) {

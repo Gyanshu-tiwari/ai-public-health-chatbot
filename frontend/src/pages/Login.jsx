@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../context/AppProvider.jsx";
 import toast from "react-hot-toast";
-import api from "../../utils/api";
+import api from "../utils/api";
 
 import {
   Mail,
@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 
 const Login = () => {
-  
+
   const { setToken, navigate } = useAppContext();
 
   const [email, setEmail] = useState("");
@@ -28,7 +28,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-   
+
 
     try {
       const { data } = await api.post("/api/auth/login", {

@@ -7,7 +7,7 @@ import LogoutIcon from '../../assets/logout_icon.svg'
 import UserIcon from '../../assets/user_icon.svg'
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import api from '../../../utils/api'
+import api from "../../utils/api";
 
 
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import api from "../../utils/api";
+import api from "../utils/api";
 import { Mail, ArrowRight, ChevronLeft, AlertCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
