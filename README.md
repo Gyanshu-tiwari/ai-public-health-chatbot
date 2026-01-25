@@ -1,36 +1,46 @@
-# 🏥 AI-Driven Public Health Chatbot
+# 🤖 AI Public Health Chatbot
 
-**Production-Ready Full-Stack Healthcare AI Assistant with Advanced Medical Features**
-
-A comprehensive AI-powered chatbot platform for health awareness, symptom checking, telemedicine integration, appointment booking, medical database access, health records management, and insurance processing—all with strict safety guardrails.
+**A modern AI-powered health chatbot with enhanced user authentication, chat management, AI responses featuring PrismJS syntax highlighting, and ORS (Online Registration System) appointment booking.**
 
 ---
 
-## 🚀 Core Features
+## 🚀 Features
 
-### AI & Chat
-- **AI-Powered Health Chat**: OpenAI-powered assistant for health awareness
-- **Bilingual Support**: English and Hindi language support
-- **Safety First**: Strict guardrails to prevent diagnosis and prescription
-- **Emergency Detection**: Automatic detection and escalation for critical symptoms
+### ✨ Core Features
+- **AI-Powered Chat**: Intelligent health assistant powered by Google Gemini API
+- **User Authentication**: Secure JWT-based registration and login system
+- **Chat Management**: Create, manage, and delete chat conversations
+- **Enhanced UI**: Modern React frontend with responsive design
+- **Syntax Highlighting**: PrismJS integration for code blocks in AI responses
+- **Real-time Responses**: Fast AI responses with proper error handling
+- **Copy Code**: One-click code copying functionality
+- **Rich Markdown**: Full markdown support with tables, lists, and formatting
 
-### Clinical Features
-- **Symptom Checker**: AI-assisted screening with doctor referral
-- **Medical Database**: Access verified health information and conditions
-- **Health Records**: Secure storage, organization, and sharing of medical records
-- **Doctor Telemedicine**: Video consultations with licensed healthcare providers
+### 🏥 ORS Appointment Booking
+- **Phone Authentication**: Login with phone number and OTP (mimics ORS.gov.in)
+- **Hospital Selection**: Choose from multiple government hospitals (AIIMS, Safdarjung, etc.)
+- **Department Selection**: Browse medical departments and specialties
+- **Doctor Booking**: Select doctors and view their qualifications
+- **Time Slot Management**: Real-time availability checking and booking
+- **Appointment History**: View, manage, and cancel appointments
+- **Consultation Types**: Support for both online and offline consultations
+- **Booking Confirmation**: Instant confirmation with reference numbers
 
-### Booking & Insurance
-- **Appointment Booking**: Schedule with healthcare providers
-- **Insurance Integration**: Process insurance claims and check coverage
-- **Provider Directory**: Find doctors by specialty and availability
-- **Doctor Ratings**: View experience, ratings, and availability
+### 🛡️ Security Features
+- **JWT Authentication**: Secure token-based authentication
+- **Password Encryption**: BCrypt password hashing
+- **CORS Protection**: Configurable cross-origin resource sharing
+- **Input Validation**: Comprehensive request validation
+- **API Security**: Protected endpoints with proper authorization
+- **Phone Verification**: OTP-based authentication for appointments
 
-### Safety & Compliance
-- **HIPAA Framework**: Ready for HIPAA compliance implementation
-- **Data Encryption**: Secure medical data handling
-- **Medical Disclaimers**: All responses include professional consultation recommendations
-- **Emergency Protocol**: Critical symptom detection and emergency referral
+### 🎨 UI/UX Features
+- **Modern Design**: Clean, intuitive interface
+- **Responsive Layout**: Works on all device sizes
+- **Code Highlighting**: Beautiful syntax highlighting for code snippets
+- **Message Formatting**: Rich markdown rendering with proper styling
+- **Error Handling**: User-friendly error messages and notifications
+- **Progress Indicators**: Step-by-step appointment booking process
 
 ---
 
@@ -40,164 +50,158 @@ A comprehensive AI-powered chatbot platform for health awareness, symptom checki
 ai-public-health-chatbot/
 ├── frontend/                           React + Vite frontend
 │   ├── src/
-│   │   ├── App.jsx
 │   │   ├── components/
-│   │   │   ├── ChatWindow.jsx
-│   │   │   ├── MessageBubble.jsx
-│   │   │   └── LanguageSwitcher.jsx
+│   │   │   ├── chatComponents/
+│   │   │   │   ├── ChatWindow.jsx
+│   │   │   │   ├── MessageItems.jsx    # Enhanced with PrismJS
+│   │   │   │   └── ...
+│   │   │   ├── ORSAppointmentBooking.jsx  # ORS appointment booking
+│   │   │   ├── QuickAppointmentBooking.jsx  # Chat-integrated booking
+│   │   │   └── AppointmentHistory.jsx   # Appointment management
 │   │   ├── pages/
-│   │   │   └── index.jsx
-│   │   └── styles/
-│   │       └── globals.css
+│   │   │   ├── Chat.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── ORSAppointmentPage.jsx  # Full-page appointment booking
+│   │   │   └── ...
+│   │   ├── utils/
+│   │   │   └── api.jsx              # Axios API client
+│   │   └── App.jsx
 │   └── package.json
-│
-├── backend/                            Node.js + Express backend
+├── backend/                            Spring Boot backend
 │   ├── src/
-│   │   ├── app.js                      Main server
-│   │   ├── routes/
-│   │   │   ├── chat.js
-│   │   │   ├── telemedicine.js
-│   │   │   ├── appointments.js
-│   │   │   ├── medical-db.js
-│   │   │   ├── symptoms.js
-│   │   │   ├── records.js
-│   │   │   └── insurance.js
-│   │   ├── controllers/
-│   │   │   ├── chatController.js
-│   │   │   ├── telemedicineController.js
-│   │   │   ├── appointmentController.js
-│   │   │   ├── medicalDbController.js
-│   │   │   ├── symptomController.js
-│   │   │   ├── recordsController.js
-│   │   │   └── insuranceController.js
-│   │   ├── services/
-│   │   │   ├── aiService.js            OpenAI integration
-│   │   │   ├── telemedicineService.js
-│   │   │   ├── appointmentService.js
-│   │   │   ├── medicalDbService.js
-│   │   │   ├── symptomService.js
-│   │   │   ├── recordsService.js
-│   │   │   └── insuranceService.js
-│   │   ├── middleware/
-│   │   │   ├── auth.js
-│   │   │   ├── validation.js
-│   │   │   └── errorHandler.js
-│   │   └── data/
-│   │       └── diseases.json
-│   └── package.json
-│
-├── ai-prompts/                         AI configuration
-│   ├── systemPrompt.txt
-│   └── safetyRules.txt
-│
-└── docs/                               Documentation
-    ├── ARCHITECTURE.md
-    └── PITCH.md
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/healthchat/
+│   │   │   │       ├── controller/
+│   │   │   │       │   ├── AuthController.java
+│   │   │   │       │   ├── MessageController.java
+│   │   │   │       │   ├── ChatController.java
+│   │   │   │       │   ├── ORSController.java      # ORS appointment API
+│   │   │   │       │   └── TestController.java
+│   │   │   │       ├── service/
+│   │   │   │       │   ├── gemini/
+│   │   │   │       │   │   └── GeminiService.java  # Enhanced AI service
+│   │   │   │       │   ├── ORSService.java          # ORS business logic
+│   │   │   │       │   ├── AuthService.java
+│   │   │   │       │   ├── MessageService.java
+│   │   │   │       │   └── UserService.java
+│   │   │   │       ├── config/
+│   │   │   │       │   ├── SecurityConfig.java
+│   │   │   │       │   └── JwtAuthenticationFilter.java
+│   │   │   │       ├── dto/
+│   │   │   │       │   ├── RegisterRequest.java
+│   │   │   │       │   ├── LoginRequest.java
+│   │   │   │       │   ├── ORSLoginRequest.java   # ORS authentication
+│   │   │   │       │   └── ORSAppointmentRequest.java  # Appointment booking
+│   │   │   │       └── model/
+│   │   │   │           ├── Chat.java
+│   │   │   │           ├── User.java
+│   │   │   │           ├── Hospital.java          # ORS hospital model
+│   │   │   │           ├── Department.java       # ORS department model
+│   │   │   │           ├── Doctor.java           # ORS doctor model
+│   │   │   │           └── ORSAppointment.java   # ORS appointment model
+│   │   │   └── resources/
+│   │   │       └── application.properties
+│   └── pom-simple.xml
+├── README.md
+└── .gitignore
 ```
 
 ---
 
 ## ⚡ Quick Start
 
-### Backend Setup
+### Prerequisites
+- **Java 17+** - Backend development
+- **Node.js 16+** - Frontend development
+- **MongoDB** - Database
+- **Google Gemini API Key** - AI service
 
-1. **Install Dependencies**
-   ```bash
-   cd backend
-   npm install
-   ```
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd ai-public-health-chatbot
+```
 
-2. **Configure Environment Variables**
-   Create `.env` file in `backend/` folder:
-   ```env
-   OPENAI_API_KEY=sk-your-openai-key
-   PORT=3001
-   NODE_ENV=development
-   FRONTEND_URL=http://localhost:5173
-   DATABASE_URL=mongodb://localhost:27017/health-chatbot
-   TWILIO_ACCOUNT_SID=your-twilio-sid
-   TWILIO_AUTH_TOKEN=your-twilio-token
-   STRIPE_SECRET_KEY=sk-your-stripe-key
-   SENDGRID_API_KEY=your-sendgrid-key
-   ```
+### 2. Backend Setup
+```bash
+cd backend
 
-3. **Start Backend Server**
-   ```bash
-   npm run dev
-   ```
-   Server runs on `http://localhost:3001`
+# Set environment variables (Windows PowerShell)
+$env:GEMINI_API_KEY="your-gemini-api-key"
+$env:MY_EMAIL="your-email@gmail.com"
+$env:MY_PASSWORD="your-app-password"
+$env:JWT_KEY="your-jwt-secret-key"
 
-### Frontend Setup
+# Or create .env file
+echo "GEMINI_API_KEY=your-gemini-api-key" > .env
+echo "MY_EMAIL=your-email@gmail.com" >> .env
+echo "MY_PASSWORD=your-app-password" >> .env
+echo "JWT_KEY=your-jwt-secret-key" >> .env
 
-1. **Install Dependencies**
-   ```bash
-   cd frontend
-   npm install
-   ```
+# Install dependencies and run
+mvn clean install -f pom-simple.xml -DskipTests
+mvn spring-boot:run -f pom-simple.xml
+```
 
-2. **Start Frontend**
-   ```bash
-   npm run dev
-   ```
-   App runs on `http://localhost:5173`
+**Backend runs on:** `http://localhost:8080`
+
+### 3. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+**Frontend runs on:** `http://localhost:5173`
+
+### 4. Initialize ORS Data
+```bash
+# Initialize sample hospitals and doctors
+curl -X POST http://localhost:8080/api/ors/initialize-data
+```
 
 ---
 
-## 📡 API Endpoints (31 Total)
+## 📡 API Endpoints
 
-### Chat & Health
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/api/chat` | AI health chat |
-| GET | `/api/chat/health` | Health check |
+### Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | User registration |
+| POST | `/api/auth/login` | User login |
+| GET | `/api/auth/me` | Get user info |
+| POST | `/api/auth/logout` | User logout |
 
-### Symptom Checking
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/api/symptoms/check` | Check symptoms with AI analysis |
-| POST | `/api/symptoms/recommendations` | Get doctor recommendations |
-| POST | `/api/symptoms/emergency` | Check for emergency symptoms |
+### Chat & Messages
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/message/text` | Send message to AI |
+| GET | `/api/chat/create` | Create new chat |
+| GET | `/api/chat/get` | Get user chats |
+| POST | `/api/chat/delete` | Delete chat |
 
-### Telemedicine
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/api/telemedicine/start-consultation` | Start video call |
-| GET | `/api/telemedicine/available-doctors` | List doctors |
-| GET | `/api/telemedicine/consultation/:id` | Get consultation details |
-| PUT | `/api/telemedicine/consultation/:id/rate` | Rate consultation |
+### ORS Appointment Booking
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/ors/send-otp` | Send OTP to phone number |
+| POST | `/api/ors/verify-otp` | Verify OTP and authenticate |
+| GET | `/api/ors/hospitals` | Get all hospitals |
+| GET | `/api/ors/hospitals/{id}` | Get hospital by ID |
+| GET | `/api/ors/hospitals/{id}/departments` | Get hospital departments |
+| GET | `/api/ors/hospitals/{id}/departments/{id}/doctors` | Get department doctors |
+| GET | `/api/ors/doctors/{id}/time-slots` | Get available time slots |
+| POST | `/api/ors/appointments` | Book appointment |
+| GET | `/api/ors/appointments/phone/{phone}` | Get user appointments |
+| GET | `/api/ors/appointments/{id}` | Get appointment by ID |
+| PUT | `/api/ors/appointments/{id}/cancel` | Cancel appointment |
+| POST | `/api/ors/initialize-data` | Initialize sample data |
 
-### Appointments
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/api/appointments/book` | Book appointment |
-| GET | `/api/appointments` | List appointments |
-| PUT | `/api/appointments/:id/reschedule` | Reschedule |
-| DELETE | `/api/appointments/:id/cancel` | Cancel |
-| GET | `/api/appointments/availability` | Check availability |
-
-### Medical Database
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| GET | `/api/medical-db/condition/:name` | Get condition info |
-| POST | `/api/medical-db/search` | Search conditions |
-| GET | `/api/medical-db/medications/:condition` | Get medications |
-| GET | `/api/medical-db/treatments/:condition` | Get treatments |
-
-### Health Records
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/api/records/save` | Save health record |
-| GET | `/api/records/:patientId` | Get patient records |
-| PUT | `/api/records/:id/update` | Update record |
-| DELETE | `/api/records/:id` | Delete record |
-
-### Insurance
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/api/insurance/claim` | File claim |
-| GET | `/api/insurance/coverage/:patientId` | Check coverage |
-| GET | `/api/insurance/claims` | Get claims |
-| PUT | `/api/insurance/claims/:id/status` | Update claim status |
+### Testing
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/test/gemini` | Test AI service |
 
 ---
 
@@ -205,66 +209,46 @@ ai-public-health-chatbot/
 
 ### Chat Endpoint
 ```bash
-curl -X POST http://localhost:3001/api/chat \
+curl -X POST http://localhost:8080/api/message/text \
   -H "Content-Type: application/json" \
-  -d '{"message":"How can I prevent flu?","language":"en"}'
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{"prompt":"How can I prevent flu?","chatId":"chat-id"}'
 ```
 
-**Response:**
-```json
-{
-  "reply": "Here are effective ways to prevent flu: 1. Get vaccinated annually 2. Practice good hand hygiene 3. Maintain healthy lifestyle 4. Avoid close contact with sick people. If symptoms develop, consult a healthcare professional."
-}
-```
-
-### Check Symptoms
+### ORS Appointment Booking
 ```bash
-curl -X POST http://localhost:3001/api/symptoms/check \
+# Send OTP
+curl -X POST "http://localhost:8080/api/ors/send-otp?phoneNumber=9876543210"
+
+# Verify OTP
+curl -X POST http://localhost:8080/api/ors/verify-otp \
+  -H "Content-Type: application/json" \
+  -d '{"phoneNumber":"9876543210","otp":"123456"}'
+
+# Get Hospitals
+curl -X GET http://localhost:8080/api/ors/hospitals
+
+# Book Appointment
+curl -X POST http://localhost:8080/api/ors/appointments \
   -H "Content-Type: application/json" \
   -d '{
-    "symptoms": ["fever", "cough"],
-    "duration": "3 days",
-    "severity": "moderate",
-    "age": 35,
-    "language": "en"
+    "hospitalId":"hospital-id",
+    "departmentId":"department-id", 
+    "doctorId":"doctor-id",
+    "patientName":"John Doe",
+    "phoneNumber":"9876543210",
+    "age":"30",
+    "gender":"Male",
+    "appointmentDate":"2026-01-25T00:00:00",
+    "timeSlot":"09:00 AM - 09:30 AM"
   }'
 ```
 
-**Response:**
-```json
-{
-  "analysis": "Based on your symptoms, possible conditions include common cold, flu, or mild respiratory infection.",
-  "severity": "moderate",
-  "recommendation": "⚠️ Please consult a healthcare professional for proper diagnosis.",
-  "suggestedDoctors": [
-    {
-      "id": "doc-001",
-      "name": "Dr. Sharma",
-      "specialty": "General Practitioner",
-      "available": true
-    }
-  ]
-}
-```
-
-### List Available Doctors
+### User Registration
 ```bash
-curl -X POST http://localhost:3001/api/telemedicine/available-doctors \
+curl -X POST http://localhost:8080/api/auth/register \
   -H "Content-Type: application/json" \
-  -d '{"specialty":"General Practitioner","language":"en"}'
-```
-
-### Book Appointment
-```bash
-curl -X POST http://localhost:3001/api/appointments/book \
-  -H "Content-Type: application/json" \
-  -d '{
-    "providerId": "provider-001",
-    "userId": "user-123",
-    "date": "2024-01-20",
-    "time": "10:00",
-    "reason": "Regular checkup"
-  }'
+  -d '{"name":"Test User","email":"test@example.com","password":"test123"}'
 ```
 
 ---
@@ -345,58 +329,39 @@ const systemPrompt = language === 'hi' ?
 
 ## 📊 Technology Stack
 
-**Frontend:**
-- React 18 + Vite
-- CSS for styling
-- Bilingual component support
+### Frontend
+- **React 19.2.0** - UI framework
+- **Vite 7.3.1** - Build tool and dev server
+- **Axios** - HTTP client for API calls
+- **PrismJS** - Syntax highlighting library
+- **React Markdown** - Markdown rendering
+- **Lucide React** - Icon library
+- **React Router** - Client-side routing
 
-**Backend:**
-- Node.js 16+
-- Express.js 4.18
-- OpenAI API integration
-- Axios for HTTP requests
-- CORS for cross-origin requests
-- Dotenv for environment management
+### Backend
+- **Spring Boot 3.2.0** - Java framework
+- **MongoDB** - NoSQL database
+- **JWT (jjwt)** - Authentication tokens
+- **Spring Security** - Security framework
+- **Maven** - Build and dependency management
+- **Jackson** - JSON processing
+- **BCrypt** - Password encryption
 
-**Optional Integrations:**
-- MongoDB (health records)
-- Twilio (telemedicine video)
-- Stripe (insurance payments)
-- SendGrid (email notifications)
-
----
-
-## 🔧 Dependencies
-
-```json
-{
-  "dependencies": {
-    "express": "4.18.2",
-    "cors": "2.8.5",
-    "dotenv": "16.3.1",
-    "axios": "1.6.2",
-    "openai": "latest"
-  }
-}
-```
-
-**Total packages:** 80  
-**Security vulnerabilities:** 0
+### Integration
+- **Google Gemini API** - AI service
+- **RESTful API** - Backend API design
+- **CORS** - Cross-origin resource sharing
+- **JWT Authentication** - Secure stateless auth
+- **Phone OTP** - ORS-style authentication
 
 ---
 
-## 📋 Prerequisites
+##  Prerequisites
 
+- **Java 17+** - [Download](https://adoptium.net/)
 - **Node.js 16+** - [Download](https://nodejs.org)
-- **npm** - Comes with Node.js
-- **OpenAI API Key** - [Get key](https://platform.openai.com/api-keys)
-- **Telemedicine (Optional):**
-  - Twilio account for video
-- **Insurance (Optional):**
-  - Stripe account for payments
-  - SendGrid for email notifications
-- **Database (Optional):**
-  - MongoDB for health records
+- **MongoDB** - [Download](https://www.mongodb.com/try)
+- **Google Gemini API Key** - [Get key](https://aistudio.google.com/app/apikey)
 
 ---
 
@@ -707,24 +672,41 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🏆 Current Status
 
-**Version**: 2.0 - Advanced Healthcare Features  
-**Last Updated**: January 2, 2026  
+**Version**: 1.1.0 - ORS Appointment Booking Integration  
+**Last Updated**: January 25, 2026  
 **Status**: ✅ Production Ready
 
 ### ✅ Working Features
 - **User Authentication**: Registration and login fully functional
 - **AI Chat Service**: Gemini API integration with syntax highlighting
+- **ORS Appointment Booking**: Complete hospital appointment system
+  - Phone number authentication with OTP
+  - Hospital/Department/Doctor selection
+  - Time slot booking and management
+  - Appointment history and cancellation
 - **CORS Configuration**: Properly configured for cross-origin requests
-- **Error Handling**: Comprehensive error management
-- **Database Integration**: MongoDB with chat persistence
+- **Database Integration**: MongoDB with chat and appointment persistence
 - **Security**: JWT authentication with proper validation
+- **Enhanced UI**: Modern React interface with PrismJS highlighting
+
+### 🆕 New in v1.1.0
+- **ORS Integration**: Complete ORS.gov.in-style appointment booking
+- **Phone Authentication**: OTP-based login system
+- **Hospital Management**: Multiple hospitals with departments and doctors
+- **Appointment Management**: Book, view, and cancel appointments
+- **Chat Integration**: Quick appointment booking from chat interface
+- **Sample Data**: Pre-configured hospitals (AIIMS, Safdarjung) and doctors
 
 ### 🚀 Quick Start Summary
 1. **Get Gemini API Key**: [Google AI Studio](https://aistudio.google.com/app/apikey)
 2. **Set Environment**: Configure `GEMINI_API_KEY` environment variable
 3. **Start Backend**: `mvn spring-boot:run -f pom-simple.xml`
 4. **Start Frontend**: `npm run dev`
-5. **Access Application**: Open `http://localhost:5173`
-6. **Register & Chat**: Create account and start chatting!
+5. **Initialize ORS Data**: `curl -X POST http://localhost:8080/api/ors/initialize-data`
+6. **Access Application**: 
+   - Chat: `http://localhost:5173`
+   - Appointments: `http://localhost:5173/book-appointment`
+7. **Register & Chat**: Create account and start chatting!
+8. **Book Appointments**: Use phone number to book hospital appointments
 
-**🎉 Your AI health chatbot is ready to use!**
+**🎉 Your AI health chatbot with ORS appointment booking is ready to use!**
