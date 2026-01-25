@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import api from "../../utils/api";
+import api from "../utils/api";
 import toast from "react-hot-toast";
 import {
   Lock,

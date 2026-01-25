@@ -1,5 +1,12 @@
 package com.healthchat.service;
 
+import java.time.LocalDateTime;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.healthchat.dto.AuthResponse;
 import com.healthchat.dto.LoginRequest;
 import com.healthchat.dto.RegisterRequest;
@@ -7,12 +14,6 @@ import com.healthchat.dto.UserDTO;
 import com.healthchat.model.User;
 import com.healthchat.repository.UserRepository;
 import com.healthchat.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Random;
 
 @Service
 public class AuthService {

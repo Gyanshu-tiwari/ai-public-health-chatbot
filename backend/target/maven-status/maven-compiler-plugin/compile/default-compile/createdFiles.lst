@@ -1,6 +1,7 @@
 com\healthchat\model\Doctor.class
 com\healthchat\service\openai\OpenAIService.class
 com\healthchat\controller\HealthController.class
+com\healthchat\service\DoctorDataService.class
 com\healthchat\service\gemini\GeminiService.class
 com\healthchat\model\Department.class
 com\healthchat\dto\MessageRequest.class

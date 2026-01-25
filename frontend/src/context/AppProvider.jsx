@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import api from "../../utils/api";
+import api from "../utils/api";
 
 const AppContext = createContext();
 
@@ -20,7 +20,7 @@ export const AppContextProvider = ({ children }) => {
   /* ================= FETCH LOGGED-IN USER ================= */
   const fetchUser = async () => {
     try {
-      const { data } = await api.get("/api/auth/me",{headers:{Authorization: `Bearer ${token}`}});
+      const { data } = await api.get("/api/auth/me", { headers: { Authorization: `Bearer ${token}` } });
       setUser(data.user);
     } catch {
       // ❗ Do NOT logout here (OTP/reset flow needs this)
@@ -35,7 +35,7 @@ export const AppContextProvider = ({ children }) => {
     if (!user) return;
 
     try {
-      const { data } = await api.get("/api/chat/get",{headers:{Authorization: `Bearer ${token}`}});
+      const { data } = await api.get("/api/chat/get", { headers: { Authorization: `Bearer ${token}` } });
       setChats(data.chats || []);
       setSelectedChat(data.chats?.[0] || null);
     } catch {
@@ -48,13 +48,13 @@ export const AppContextProvider = ({ children }) => {
     if (!user) return toast.error("Please login first");
 
     try {
-      await api.get("/api/chat/create",{headers:{Authorization: `Bearer ${token}`}});
+      await api.get("/api/chat/create", { headers: { Authorization: `Bearer ${token}` } });
       fetchUserChats();
     } catch {
       toast.error("Failed to create chat");
     }
   };
-  
+
 
   /* ================= LOGOUT ================= */
   const logout = (redirect = true) => {

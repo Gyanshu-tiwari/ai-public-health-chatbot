@@ -1,9 +1,6 @@
 package com.healthchat.dto;
 
-import java.time.LocalDateTime;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class ORSAppointmentRequest {
     
@@ -30,8 +27,8 @@ public class ORSAppointmentRequest {
     @NotBlank(message = "Gender is required")
     private String gender;
     
-    @NotNull(message = "Appointment date is required")
-    private LocalDateTime appointmentDate;
+    @NotBlank(message = "Appointment date is required")
+    private String appointmentDate;
     
     @NotBlank(message = "Time slot is required")
     private String timeSlot;
@@ -43,7 +40,7 @@ public class ORSAppointmentRequest {
 
     public ORSAppointmentRequest(String hospitalId, String departmentId, String doctorId, 
                                 String patientName, String phoneNumber, String age, String gender, 
-                                LocalDateTime appointmentDate, String timeSlot) {
+                                String appointmentDate, String timeSlot) {
         this.hospitalId = hospitalId;
         this.departmentId = departmentId;
         this.doctorId = doctorId;
@@ -80,8 +77,8 @@ public class ORSAppointmentRequest {
     public String getGender() { return gender; }
     public void setGender(String gender) { this.gender = gender; }
 
-    public LocalDateTime getAppointmentDate() { return appointmentDate; }
-    public void setAppointmentDate(LocalDateTime appointmentDate) { this.appointmentDate = appointmentDate; }
+    public String getAppointmentDate() { return appointmentDate; }
+    public void setAppointmentDate(String appointmentDate) { this.appointmentDate = appointmentDate; }
 
     public String getTimeSlot() { return timeSlot; }
     public void setTimeSlot(String timeSlot) { this.timeSlot = timeSlot; }

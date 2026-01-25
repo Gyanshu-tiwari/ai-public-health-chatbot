@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import api from "../../utils/api";
+import api from "../utils/api";
 import toast from "react-hot-toast";
 
 const OTPInput = () => {

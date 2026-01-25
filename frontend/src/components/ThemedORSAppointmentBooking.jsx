@@ -31,7 +31,7 @@ const ORSAppointmentBooking = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
-  const API_BASE = import.meta.env.VITE_SERVER_URL || 'http://localhost:8080';
+  const API_BASE = import.meta.env.VITE_SERVER_URL || '';
 
   useEffect(() => {
     initializeData();
@@ -39,19 +39,19 @@ const ORSAppointmentBooking = () => {
 
   const initializeData = async () => {
     try {
-      const initResponse = await fetch(`${API_BASE}/ors/initialize-data`, {
+      const initResponse = await fetch(`${API_BASE}/api/ors/initialize-data`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      
+
       if (!initResponse.ok) {
         throw new Error(`Failed to initialize data: ${initResponse.status}`);
       }
-      
+
       const initData = await initResponse.json();
-      
+
       if (initData.success) {
         await fetchHospitals();
       } else {
@@ -66,29 +66,29 @@ const ORSAppointmentBooking = () => {
 
   const fetchHospitals = async () => {
     try {
-      const response = await fetch(`${API_BASE}/ors/hospitals`);
-      
+      const response = await fetch(`${API_BASE}/api/ors/hospitals`);
+
       if (!response.ok) {
-        throw new Error(`Failed to fetch hospitals: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch hospitals: ${response.status}, message: ${errorText}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         setHospitals(data.hospitals);
       } else {
-        console.error('Failed to fetch hospitals:', data.message);
-        setError('Failed to fetch hospitals');
+        setError('Failed to fetch hospitals: ' + (data.message || 'Unknown error'));
       }
     } catch (error) {
       console.error('Error fetching hospitals:', error);
-      setError('Failed to fetch hospitals');
+      setError('Failed to fetch hospitals: ' + error.message);
     }
   };
 
   const fetchDepartments = async (hospitalId) => {
     try {
-      const response = await fetch(`${API_BASE}/ors/hospitals/${hospitalId}/departments`);
+      const response = await fetch(`${API_BASE}/api/ors/hospitals/${hospitalId}/departments`);
       const data = await response.json();
       if (data.success) {
         setDepartments(data.departments);
@@ -101,7 +101,7 @@ const ORSAppointmentBooking = () => {
 
   const fetchDoctors = async (hospitalId, departmentId) => {
     try {
-      const response = await fetch(`${API_BASE}/ors/hospitals/${hospitalId}/departments/${departmentId}/doctors`);
+      const response = await fetch(`${API_BASE}/api/ors/hospitals/${hospitalId}/departments/${departmentId}/doctors`);
       const data = await response.json();
       if (data.success) {
         setDoctors(data.doctors);
@@ -114,7 +114,7 @@ const ORSAppointmentBooking = () => {
 
   const fetchTimeSlots = async (doctorId, date) => {
     try {
-      const response = await fetch(`${API_BASE}/ors/doctors/${doctorId}/time-slots?date=${date}`);
+      const response = await fetch(`${API_BASE}/api/ors/doctors/${doctorId}/time-slots?date=${date}`);
       const data = await response.json();
       if (data.success) {
         setTimeSlots(data.timeSlots);
@@ -127,37 +127,37 @@ const ORSAppointmentBooking = () => {
 
   const validateForm = () => {
     const errors = {};
-    
+
     if (step === 1) {
       if (!phoneNumber || phoneNumber.length !== 10) {
         errors.phoneNumber = 'Please enter a valid 10-digit phone number';
       }
     }
-    
+
     if (step === 2) {
       if (!otp || otp.length !== 6) {
         errors.otp = 'Please enter a valid 6-digit OTP';
       }
     }
-    
+
     if (step === 3) {
       if (!selectedHospital) {
         errors.hospital = 'Please select a hospital';
       }
     }
-    
+
     if (step === 4) {
       if (!selectedDepartment) {
         errors.department = 'Please select a department';
       }
     }
-    
+
     if (step === 5) {
       if (!selectedDoctor) {
         errors.doctor = 'Please select a doctor';
       }
     }
-    
+
     if (step === 6) {
       if (!selectedDate) {
         errors.date = 'Please select a date';
@@ -175,24 +175,20 @@ const ORSAppointmentBooking = () => {
         errors.gender = 'Please select gender';
       }
     }
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const sendOTP = async () => {
     if (!validateForm()) return;
-    
+
     setLoading(true);
     setError('');
     setSuccess('');
-    
+
     try {
-      const url = `${API_BASE}/ors/send-otp?phoneNumber=${phoneNumber}`;
-      console.log('Attempting to fetch URL:', url);
-      console.log('API_BASE:', API_BASE);
-      
-      const response = await fetch(url, {
+      const response = await fetch(`${API_BASE}/api/ors/send-otp?phoneNumber=${phoneNumber}`, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -201,19 +197,14 @@ const ORSAppointmentBooking = () => {
           'Accept': 'application/json',
         },
       });
-      
-      console.log('Response status:', response.status);
-      console.log('Response ok:', response.ok);
-      
+
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Error response:', errorText);
         throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
-      
+
       const data = await response.json();
-      console.log('Response data:', data);
-      
+
       if (data.success) {
         setGeneratedOtp(data.otp);
         setSuccess('OTP sent successfully! For demo, OTP is: ' + data.otp);
@@ -231,26 +222,26 @@ const ORSAppointmentBooking = () => {
 
   const verifyOTP = async () => {
     if (!validateForm()) return;
-    
+
     setLoading(true);
     setError('');
     setSuccess('');
-    
+
     try {
-      const response = await fetch(`${API_BASE}/ors/verify-otp`, {
+      const response = await fetch(`${API_BASE}/api/ors/verify-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ phoneNumber, otp }),
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         setIsAuthenticated(true);
         setSuccess('OTP verified successfully!');
@@ -268,11 +259,11 @@ const ORSAppointmentBooking = () => {
 
   const bookAppointment = async () => {
     if (!validateForm()) return;
-    
+
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(`${API_BASE}/ors/appointments`, {
+      const response = await fetch(`${API_BASE}/api/ors/appointments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -341,7 +332,7 @@ const ORSAppointmentBooking = () => {
               <h3 className="text-2xl font-bold text-white mb-2">Enter Phone Number</h3>
               <p className="text-gray-400">We'll send you a verification code</p>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -362,7 +353,7 @@ const ORSAppointmentBooking = () => {
                   </p>
                 )}
               </div>
-              
+
               <button
                 onClick={sendOTP}
                 disabled={loading}
@@ -388,7 +379,7 @@ const ORSAppointmentBooking = () => {
               <h3 className="text-2xl font-bold text-white mb-2">Enter OTP</h3>
               <p className="text-gray-400">We've sent a 6-digit code to {phoneNumber}</p>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -409,7 +400,7 @@ const ORSAppointmentBooking = () => {
                   </p>
                 )}
               </div>
-              
+
               <button
                 onClick={verifyOTP}
                 disabled={loading}
@@ -435,17 +426,16 @@ const ORSAppointmentBooking = () => {
               <h3 className="text-2xl font-bold text-white mb-2">Select Hospital</h3>
               <p className="text-gray-400">Choose your preferred hospital</p>
             </div>
-            
+
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {hospitals.map((hospital) => (
                 <div
                   key={hospital.id}
                   onClick={() => setSelectedHospital(hospital)}
-                  className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                    selectedHospital?.id === hospital.id
+                  className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedHospital?.id === hospital.id
                       ? 'border-indigo-500 bg-indigo-500/10'
                       : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -475,14 +465,14 @@ const ORSAppointmentBooking = () => {
                 </div>
               ))}
             </div>
-            
+
             {formErrors.hospital && (
               <p className="text-sm text-red-400 flex items-center">
                 <AlertCircle className="w-4 h-4 mr-1" />
                 {formErrors.hospital}
               </p>
             )}
-            
+
             <button
               onClick={() => {
                 if (validateForm()) {
@@ -507,17 +497,16 @@ const ORSAppointmentBooking = () => {
               <h3 className="text-2xl font-bold text-white mb-2">Select Department</h3>
               <p className="text-gray-400">Choose the medical department</p>
             </div>
-            
+
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {departments.map((department) => (
                 <div
                   key={department.id}
                   onClick={() => setSelectedDepartment(department)}
-                  className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                    selectedDepartment?.id === department.id
+                  className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedDepartment?.id === department.id
                       ? 'border-indigo-500 bg-indigo-500/10'
                       : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -547,14 +536,14 @@ const ORSAppointmentBooking = () => {
                 </div>
               ))}
             </div>
-            
+
             {formErrors.department && (
               <p className="text-sm text-red-400 flex items-center">
                 <AlertCircle className="w-4 h-4 mr-1" />
                 {formErrors.department}
               </p>
             )}
-            
+
             <button
               onClick={() => {
                 if (validateForm()) {
@@ -579,17 +568,16 @@ const ORSAppointmentBooking = () => {
               <h3 className="text-2xl font-bold text-white mb-2">Select Doctor</h3>
               <p className="text-gray-400">Choose your preferred doctor</p>
             </div>
-            
+
             <div className="space-y-3 max-h-96 overflow-y-auto">
               {doctors.map((doctor) => (
                 <div
                   key={doctor.id}
                   onClick={() => setSelectedDoctor(doctor)}
-                  className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                    selectedDoctor?.id === doctor.id
+                  className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedDoctor?.id === doctor.id
                       ? 'border-indigo-500 bg-indigo-500/10'
                       : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -617,6 +605,24 @@ const ORSAppointmentBooking = () => {
                           <CreditCard className="w-4 h-4" />
                           <span>Consultation Fee: ₹{doctor.consultationFee}</span>
                         </div>
+                        {doctor.phone && (
+                          <div className="flex items-center gap-2 text-sm text-gray-300">
+                            <Phone className="w-4 h-4 text-green-400" />
+                            <span>{doctor.phone}</span>
+                          </div>
+                        )}
+                        {doctor.email && (
+                          <div className="flex items-center gap-2 text-sm text-gray-300">
+                            <Mail className="w-4 h-4 text-blue-400" />
+                            <span className="text-xs">{doctor.email}</span>
+                          </div>
+                        )}
+                        {doctor.state && doctor.city && (
+                          <div className="flex items-center gap-2 text-sm text-gray-300">
+                            <MapPin className="w-4 h-4 text-yellow-400" />
+                            <span>{doctor.city}, {doctor.state}</span>
+                          </div>
+                        )}
                         <div className="flex items-center gap-2 text-sm text-gray-300">
                           <span className="text-indigo-400">•</span>
                           <span>Available: {doctor.available ? 'Yes' : 'No'}</span>
@@ -627,14 +633,14 @@ const ORSAppointmentBooking = () => {
                 </div>
               ))}
             </div>
-            
+
             {formErrors.doctor && (
               <p className="text-sm text-red-400 flex items-center">
                 <AlertCircle className="w-4 h-4 mr-1" />
                 {formErrors.doctor}
               </p>
             )}
-            
+
             <button
               onClick={() => {
                 if (validateForm()) {
@@ -658,7 +664,7 @@ const ORSAppointmentBooking = () => {
               <h3 className="text-2xl font-bold text-white mb-2">Appointment Details</h3>
               <p className="text-gray-400">Fill in your appointment details</p>
             </div>
-            
+
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -684,7 +690,7 @@ const ORSAppointmentBooking = () => {
                     </p>
                   )}
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Time Slot <span className="text-red-400">*</span>
@@ -696,11 +702,10 @@ const ORSAppointmentBooking = () => {
                           key={index}
                           type="button"
                           onClick={() => setSelectedTimeSlot(slot)}
-                          className={`p-3 border rounded-lg text-sm transition-all ${
-                            selectedTimeSlot === slot
+                          className={`p-3 border rounded-lg text-sm transition-all ${selectedTimeSlot === slot
                               ? 'border-indigo-500 bg-indigo-500/10 text-white'
                               : 'border-gray-600 bg-gray-800/50 text-gray-300 hover:border-gray-500'
-                          }`}
+                            }`}
                         >
                           <div className="flex items-center gap-2">
                             <Clock className="w-4 h-4 text-indigo-400" />
@@ -723,7 +728,7 @@ const ORSAppointmentBooking = () => {
                   )}
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -732,7 +737,7 @@ const ORSAppointmentBooking = () => {
                   <input
                     type="text"
                     value={appointmentDetails.patientName}
-                    onChange={(e) => setAppointmentDetails({...appointmentDetails, patientName: e.target.value})}
+                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, patientName: e.target.value })}
                     placeholder="Enter patient name"
                     className={`w-full px-4 py-3 bg-gray-800/50 border ${formErrors.patientName ? 'border-red-500' : 'border-gray-600'} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
                   />
@@ -743,7 +748,7 @@ const ORSAppointmentBooking = () => {
                     </p>
                   )}
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Age <span className="text-red-400">*</span>
@@ -751,7 +756,7 @@ const ORSAppointmentBooking = () => {
                   <input
                     type="number"
                     value={appointmentDetails.age}
-                    onChange={(e) => setAppointmentDetails({...appointmentDetails, age: e.target.value})}
+                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, age: e.target.value })}
                     placeholder="Enter age"
                     min="1"
                     max="120"
@@ -765,7 +770,7 @@ const ORSAppointmentBooking = () => {
                   )}
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -774,19 +779,19 @@ const ORSAppointmentBooking = () => {
                   <input
                     type="email"
                     value={appointmentDetails.email}
-                    onChange={(e) => setAppointmentDetails({...appointmentDetails, email: e.target.value})}
+                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, email: e.target.value })}
                     placeholder="Enter email (optional)"
                     className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-2">
                     Gender <span className="text-red-400">*</span>
                   </label>
                   <select
                     value={appointmentDetails.gender}
-                    onChange={(e) => setAppointmentDetails({...appointmentDetails, gender: e.target.value})}
+                    onChange={(e) => setAppointmentDetails({ ...appointmentDetails, gender: e.target.value })}
                     className={`w-full px-4 py-3 bg-gray-800/50 border ${formErrors.gender ? 'border-red-500' : 'border-gray-600'} rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
                   >
                     <option value="">Select gender</option>
@@ -802,14 +807,14 @@ const ORSAppointmentBooking = () => {
                   )}
                 </div>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Consultation Type
                 </label>
                 <select
                   value={appointmentDetails.consultationType}
-                  onChange={(e) => setAppointmentDetails({...appointmentDetails, consultationType: e.target.value})}
+                  onChange={(e) => setAppointmentDetails({ ...appointmentDetails, consultationType: e.target.value })}
                   className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 >
                   <option value="OFFLINE">Offline (Hospital Visit)</option>
@@ -817,7 +822,7 @@ const ORSAppointmentBooking = () => {
                 </select>
               </div>
             </div>
-            
+
             {/* Appointment Summary */}
             {(selectedHospital || selectedDepartment || selectedDoctor || selectedDate || selectedTimeSlot) && (
               <div className="bg-gray-800/30 border border-gray-600 rounded-lg p-4">
@@ -871,7 +876,7 @@ const ORSAppointmentBooking = () => {
                 </div>
               </div>
             )}
-            
+
             <button
               onClick={bookAppointment}
               disabled={loading}
@@ -896,7 +901,7 @@ const ORSAppointmentBooking = () => {
               <h3 className="text-2xl font-bold text-white mb-2">Appointment Booked!</h3>
               <p className="text-gray-400">Your appointment has been confirmed</p>
             </div>
-            
+
             {bookedAppointment && (
               <div className="bg-gray-800/50 border border-gray-600 rounded-lg p-6 space-y-4">
                 <div className="flex items-center justify-between">
@@ -933,7 +938,7 @@ const ORSAppointmentBooking = () => {
                 </div>
               </div>
             )}
-            
+
             <button
               onClick={resetBooking}
               className="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors"
@@ -972,25 +977,22 @@ const ORSAppointmentBooking = () => {
                 ].map((stepInfo, index) => (
                   <div key={stepInfo.number} className="flex items-center flex-1">
                     <div className="flex flex-col items-center">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium mb-1 transition-all ${
-                        step >= stepInfo.number ? 'bg-indigo-500 text-white' : 'bg-gray-600 text-gray-400'
-                      }`}>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium mb-1 transition-all ${step >= stepInfo.number ? 'bg-indigo-500 text-white' : 'bg-gray-600 text-gray-400'
+                        }`}>
                         {step >= stepInfo.number ? (
                           <stepInfo.icon size={18} />
                         ) : (
                           stepInfo.number
                         )}
                       </div>
-                      <div className={`text-xs font-medium text-center ${
-                        step >= stepInfo.number ? 'text-indigo-400' : 'text-gray-500'
-                      }`}>
+                      <div className={`text-xs font-medium text-center ${step >= stepInfo.number ? 'text-indigo-400' : 'text-gray-500'
+                        }`}>
                         {stepInfo.label}
                       </div>
                     </div>
                     {index < 5 && (
-                      <div className={`flex-1 h-0.5 mx-2 ${
-                        step > stepInfo.number ? 'bg-indigo-500' : 'bg-gray-600'
-                      }`} />
+                      <div className={`flex-1 h-0.5 mx-2 ${step > stepInfo.number ? 'bg-indigo-500' : 'bg-gray-600'
+                        }`} />
                     )}
                   </div>
                 ))}
@@ -1005,7 +1007,7 @@ const ORSAppointmentBooking = () => {
                   <span className="text-red-400">{error}</span>
                 </div>
               )}
-              
+
               {success && (
                 <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-lg flex items-center">
                   <Check className="text-green-400 mr-2" size={20} />
@@ -1030,7 +1032,7 @@ const ORSAppointmentBooking = () => {
                   {showHistory ? 'Hide' : 'Show'} History
                 </button>
               </div>
-              
+
               {showHistory && (
                 <AppointmentHistory phoneNumber={phoneNumber} />
               )}

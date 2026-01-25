@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppProvider";
 import toast from "react-hot-toast";
-import api from "../../utils/api";
+import api from "../utils/api";
 
 import {
   Mail,
@@ -28,38 +28,38 @@ const Register = () => {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setIsLoading(true);
-  setError("");
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
-  try {
-    const { data } = await api.post("/api/auth/register", {
-      name,
-      email,
-      password,
-    });
+    try {
+      const { data } = await api.post("/api/auth/register", {
+        name,
+        email,
+        password,
+      });
 
-    if (data?.success && data?.token) {
-      localStorage.setItem("token", data.token);
-      setToken(data.token);
+      if (data?.success && data?.token) {
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
 
-      toast.success("Account created successfully");
-      navigate("/chat", { replace: true });
-    } else {
-      toast.error(data?.message || "Registration failed");
+        toast.success("Account created successfully");
+        navigate("/chat", { replace: true });
+      } else {
+        toast.error(data?.message || "Registration failed");
+      }
+    } catch (err) {
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        err.message;
+
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setIsLoading(false);
     }
-  } catch (err) {
-    const msg =
-      err.response?.data?.message ||
-      err.response?.data?.error ||
-      err.message;
-
-    setError(msg);
-    toast.error(msg);
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
 
 

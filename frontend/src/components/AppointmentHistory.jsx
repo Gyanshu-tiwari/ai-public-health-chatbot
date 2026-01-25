@@ -7,7 +7,7 @@ const AppointmentHistory = ({ phoneNumber }) => {
   const [error, setError] = useState('');
   const [showDetails, setShowDetails] = useState(null);
 
-  const API_BASE = import.meta.env.VITE_SERVER_URL || 'http://localhost:8080';
+  const API_BASE = import.meta.env.VITE_SERVER_URL || '';
 
   useEffect(() => {
     if (phoneNumber) {
