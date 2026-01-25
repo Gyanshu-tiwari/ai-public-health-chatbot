@@ -17,6 +17,10 @@ public class Doctor {
     private String specialization;
     private String experience;
     private String consultationFee;
+    private String phone;
+    private String email;
+    private String state;
+    private String city;
     private boolean available;
     private LocalDateTime createdAt;
 
@@ -61,6 +65,18 @@ public class Doctor {
 
     public String getConsultationFee() { return consultationFee; }
     public void setConsultationFee(String consultationFee) { this.consultationFee = consultationFee; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getState() { return state; }
+    public void setState(String state) { this.state = state; }
+
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
 
     public boolean isAvailable() { return available; }
     public void setAvailable(boolean available) { this.available = available; }

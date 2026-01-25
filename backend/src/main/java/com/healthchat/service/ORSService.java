@@ -1,6 +1,8 @@
 package com.healthchat.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -22,6 +24,9 @@ public class ORSService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private DoctorDataService doctorDataService;
 
     private final Random random = new Random();
 
@@ -68,17 +73,48 @@ public class ORSService {
 
     // Appointment operations
     public ORSAppointment bookAppointment(ORSAppointmentRequest request) {
-        // Validate hospital, department, and doctor exist
-        Hospital hospital = getHospitalById(request.getHospitalId());
+        // Convert string date to LocalDateTime
+        LocalDateTime appointmentDate;
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            appointmentDate = LocalDateTime.parse(request.getAppointmentDate(), formatter);
+        } catch (DateTimeParseException e) {
+            throw new RuntimeException("Invalid date format. Expected: yyyy-MM-dd'T'HH:mm:ss");
+        }
+        
+        // Validate appointment date is not in the past
+        if (appointmentDate.isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Appointment date cannot be in the past");
+        }
+
+        // Validate appointment date is not too far in the future (e.g., within 30 days)
+        LocalDateTime maxDate = LocalDateTime.now().plusDays(30);
+        if (appointmentDate.isAfter(maxDate)) {
+            throw new RuntimeException("Appointment date cannot be more than 30 days from now");
+        }
+
+        // Validate appointment date is not on weekends (optional - uncomment if needed)
+        // if (appointmentDate.getDayOfWeek().getValue() >= 6) {
+        //     throw new RuntimeException("Appointments are not available on weekends");
+        // }
+
+        // Validate appointment time is during business hours (optional - uncomment if needed)
+        // int hour = appointmentDate.getHour();
+        // if (hour < 9 || hour > 17) {
+        //     throw new RuntimeException("Appointments are only available between 9 AM and 5 PM");
+        // }
+
+        // Get hospital, department, and doctor details
+        Hospital hospital = mongoTemplate.findById(request.getHospitalId(), Hospital.class);
         if (hospital == null) {
             throw new RuntimeException("Hospital not found");
         }
-
+        
         Department department = mongoTemplate.findById(request.getDepartmentId(), Department.class);
         if (department == null) {
             throw new RuntimeException("Department not found");
         }
-
+        
         Doctor doctor = mongoTemplate.findById(request.getDoctorId(), Doctor.class);
         if (doctor == null) {
             throw new RuntimeException("Doctor not found");
@@ -98,10 +134,13 @@ public class ORSService {
         appointment.setEmail(request.getEmail());
         appointment.setAge(request.getAge());
         appointment.setGender(request.getGender());
-        appointment.setAppointmentDate(request.getAppointmentDate());
+        appointment.setAppointmentDate(appointmentDate);
         appointment.setTimeSlot(request.getTimeSlot());
         appointment.setConsultationType(request.getConsultationType());
         appointment.setBookingReference(generateBookingReference());
+        appointment.setStatus("BOOKED");
+        appointment.setCreatedAt(LocalDateTime.now());
+        appointment.setUpdatedAt(LocalDateTime.now());
 
         return mongoTemplate.save(appointment);
     }
@@ -200,35 +239,40 @@ public class ORSService {
             "Child healthcare");
         mongoTemplate.save(pediatrics);
 
-        // Sample doctors
-        Doctor dr1 = new Doctor("Dr. Rajesh Kumar", "DR001", aiims.getId(), cardiology.getId(), 
+        // Load doctors from CSV file
+        List<Doctor> csvDoctors = doctorDataService.parseDoctorsFromCSV();
+        System.out.println("Loaded " + csvDoctors.size() + " doctors from CSV file");
+        
+        // Assign doctors to departments (distribute them across departments)
+        List<Department> departments = List.of(cardiology, neurology, orthopedics, general, pediatrics);
+        for (Doctor doctor : csvDoctors) {
+            // Assign to a random department from AIIMS
+            Department randomDept = departments.get(random.nextInt(departments.size()));
+            doctor.setHospitalId(aiims.getId());
+            doctor.setDepartmentId(randomDept.getId());
+            doctor.setCreatedAt(LocalDateTime.now());
+            mongoTemplate.save(doctor);
+        }
+
+        // Add some hardcoded doctors for Safdarjung as well
+        Doctor dr1 = new Doctor("Dr. Rajesh Kumar", "DR001", safdarjung.getId(), cardiology.getId(), 
             "MD, DM (Cardiology)", "Interventional Cardiology");
         dr1.setExperience("15 years");
         dr1.setConsultationFee("500");
+        dr1.setPhone("011-26702501");
+        dr1.setEmail("dr.rajesh@safdarjung.in");
+        dr1.setState("Delhi");
+        dr1.setCity("New Delhi");
         mongoTemplate.save(dr1);
 
-        Doctor dr2 = new Doctor("Dr. Priya Sharma", "DR002", aiims.getId(), neurology.getId(), 
+        Doctor dr2 = new Doctor("Dr. Priya Sharma", "DR002", safdarjung.getId(), neurology.getId(), 
             "MD, DM (Neurology)", "Stroke and Neurocritical Care");
         dr2.setExperience("12 years");
         dr2.setConsultationFee("600");
+        dr2.setPhone("011-26702502");
+        dr2.setEmail("dr.priya@safdarjung.in");
+        dr2.setState("Delhi");
+        dr2.setCity("New Delhi");
         mongoTemplate.save(dr2);
-
-        Doctor dr3 = new Doctor("Dr. Amit Patel", "DR003", aiims.getId(), orthopedics.getId(), 
-            "MS, MCh (Orthopedics)", "Joint Replacement Surgery");
-        dr3.setExperience("18 years");
-        dr3.setConsultationFee("800");
-        mongoTemplate.save(dr3);
-
-        Doctor dr4 = new Doctor("Dr. Sunita Reddy", "DR004", aiims.getId(), general.getId(), 
-            "MD, DNB (General Medicine)", "Internal Medicine");
-        dr4.setExperience("10 years");
-        dr4.setConsultationFee("300");
-        mongoTemplate.save(dr4);
-
-        Doctor dr5 = new Doctor("Dr. Rohan Gupta", "DR005", aiims.getId(), pediatrics.getId(), 
-            "MD, DNB (Pediatrics)", "Pediatric Intensive Care");
-        dr5.setExperience("8 years");
-        dr5.setConsultationFee("400");
-        mongoTemplate.save(dr5);
     }
 }

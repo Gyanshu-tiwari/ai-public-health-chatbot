@@ -31,7 +31,7 @@ const ORSAppointmentBooking = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
-  const API_BASE = import.meta.env.VITE_SERVER_URL || 'http://localhost:8080';
+  const API_BASE = import.meta.env.VITE_SERVER_URL || '';
 
   useEffect(() => {
     initializeData();
@@ -69,7 +69,8 @@ const ORSAppointmentBooking = () => {
       const response = await fetch(`${API_BASE}/ors/hospitals`);
       
       if (!response.ok) {
-        throw new Error(`Failed to fetch hospitals: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch hospitals: ${response.status}, message: ${errorText}`);
       }
       
       const data = await response.json();
@@ -77,12 +78,11 @@ const ORSAppointmentBooking = () => {
       if (data.success) {
         setHospitals(data.hospitals);
       } else {
-        console.error('Failed to fetch hospitals:', data.message);
-        setError('Failed to fetch hospitals');
+        setError('Failed to fetch hospitals: ' + (data.message || 'Unknown error'));
       }
     } catch (error) {
       console.error('Error fetching hospitals:', error);
-      setError('Failed to fetch hospitals');
+      setError('Failed to fetch hospitals: ' + error.message);
     }
   };
 
@@ -188,11 +188,7 @@ const ORSAppointmentBooking = () => {
     setSuccess('');
     
     try {
-      const url = `${API_BASE}/ors/send-otp?phoneNumber=${phoneNumber}`;
-      console.log('Attempting to fetch URL:', url);
-      console.log('API_BASE:', API_BASE);
-      
-      const response = await fetch(url, {
+      const response = await fetch(`${API_BASE}/ors/send-otp?phoneNumber=${phoneNumber}`, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -202,17 +198,12 @@ const ORSAppointmentBooking = () => {
         },
       });
       
-      console.log('Response status:', response.status);
-      console.log('Response ok:', response.ok);
-      
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Error response:', errorText);
         throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
       
       const data = await response.json();
-      console.log('Response data:', data);
       
       if (data.success) {
         setGeneratedOtp(data.otp);
@@ -617,6 +608,24 @@ const ORSAppointmentBooking = () => {
                           <CreditCard className="w-4 h-4" />
                           <span>Consultation Fee: ₹{doctor.consultationFee}</span>
                         </div>
+                        {doctor.phone && (
+                          <div className="flex items-center gap-2 text-sm text-gray-300">
+                            <Phone className="w-4 h-4 text-green-400" />
+                            <span>{doctor.phone}</span>
+                          </div>
+                        )}
+                        {doctor.email && (
+                          <div className="flex items-center gap-2 text-sm text-gray-300">
+                            <Mail className="w-4 h-4 text-blue-400" />
+                            <span className="text-xs">{doctor.email}</span>
+                          </div>
+                        )}
+                        {doctor.state && doctor.city && (
+                          <div className="flex items-center gap-2 text-sm text-gray-300">
+                            <MapPin className="w-4 h-4 text-yellow-400" />
+                            <span>{doctor.city}, {doctor.state}</span>
+                          </div>
+                        )}
                         <div className="flex items-center gap-2 text-sm text-gray-300">
                           <span className="text-indigo-400">•</span>
                           <span>Available: {doctor.available ? 'Yes' : 'No'}</span>

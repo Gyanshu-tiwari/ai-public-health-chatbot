@@ -1,5 +1,12 @@
 package com.healthchat.service;
 
+import java.time.LocalDateTime;
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.healthchat.dto.AuthResponse;
 import com.healthchat.dto.LoginRequest;
 import com.healthchat.dto.RegisterRequest;
@@ -7,12 +14,6 @@ import com.healthchat.dto.UserDTO;
 import com.healthchat.model.User;
 import com.healthchat.repository.UserRepository;
 import com.healthchat.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Random;
 
 @Service
 public class AuthService {
@@ -23,8 +24,8 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private EmailService emailService;
+    // @Autowired
+    // private EmailService emailService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -95,7 +96,7 @@ public class AuthService {
         userRepository.save(user);
 
         // Send email
-        emailService.sendOTPEmail(recipientEmail, otp);
+        // emailService.sendOTPEmail(recipientEmail, otp);
     }
 
     public void verifyRecoveryOTP(String recipientEmail, String otp) {
