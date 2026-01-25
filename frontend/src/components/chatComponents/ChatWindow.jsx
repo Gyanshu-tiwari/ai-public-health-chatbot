@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/AppProvider";
 import MessageItems from "./MessageItems";
+import QuickAppointmentBooking from "../QuickAppointmentBooking";
 import sendIcon from "../../assets/send_icon.svg";
 import stopIcon from "../../assets/stop_icon.svg";
 import toast from "react-hot-toast";
@@ -19,6 +20,7 @@ const ChatWindow = () => {
     try {
       e.preventDefault();
       if (!user) return toast("login to send Message");
+      if (!selectedChat) return toast("Preparing chat...");
       setLoading(true);
       const promptCopy = prompt;
       setprompt("");
@@ -29,7 +31,7 @@ const ChatWindow = () => {
 
       const { data } = await api.post(
         `/api/message/text`,
-        { chatId: selectedChat._id, prompt },
+        { chatId: selectedChat.id || selectedChat._id, prompt },
         { headers: { Authorization: token } }
       );
       if (data.success) {
@@ -44,7 +46,7 @@ const ChatWindow = () => {
         setprompt(promptCopy);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     } finally {
       setprompt("");
       setLoading(false);
@@ -93,6 +95,9 @@ const ChatWindow = () => {
         {messages.map((message, index) => (
           <MessageItems key={index} message={message} />
         ))}
+        
+        {/* Quick Appointment Booking */}
+        <QuickAppointmentBooking />
 
         {/* Three Dot Loading animation */}
         {loading && (

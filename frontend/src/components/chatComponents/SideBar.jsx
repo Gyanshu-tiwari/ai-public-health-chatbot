@@ -13,40 +13,47 @@ import api from '../../../utils/api'
 
 
 const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
-  const { chats, setSelectedChat, user,createNewChat,setchats, fetchUserChats,setToken} = useAppContext();
+  const { chats, setSelectedChat, user, createNewChat, setchats, fetchUserChats, setToken } = useAppContext();
   const navigate = useNavigate();
+  const limitWords = (text, maxWords = 5) => {
+    if (!text) return "";
+
+    const words = text.trim().split(/\s+/);
+    if (words.length <= maxWords) return text;
+
+    return words.slice(0, maxWords).join(" ") + "...";
+  };
 
   const logout = () => {
-  localStorage.removeItem("token");
-  setToken(null);
-  toast.success("Logged out successfully");
-  navigate("/login");
-};
+    localStorage.removeItem("token");
+    setToken(null);
+    toast.success("Logged out successfully");
+    navigate("/login");
+  };
 
 
   const deleteChat = async (e, chatId) => {
-  e.stopPropagation();
+    e.stopPropagation();
 
-  const confirmDelete = window.confirm("Are you sure you want to delete this chat?");
-  if (!confirmDelete) return;
+    const confirmDelete = window.confirm("Are you sure you want to delete this chat?");
+    if (!confirmDelete) return;
 
-  try {
-    const { data } = await api.post("/api/chat/delete", { chatId });
+    try {
+      const { data } = await api.post("/api/chat/delete", { chatId });
 
-    if (data.success) {
-      toast.success(data.message);
+      if (data.success) {
+        toast.success(data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
     }
-  } catch (error) {
-    toast.error(error.response?.data?.message || error.message);
-  }
-};
+  };
 
   const [search, setSearch] = useState("");
   return (
     <div
-      className={`flex flex-col h-full min-w-72 p-5 bg-gradient-to-b from-[#242124]/30 to-[#000000]/30 border-[#80609F]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-1 ${
-        !isMenuOpen && "max-md:-translate-x-full"
-      }`}
+      className={`flex flex-col h-full min-w-72 p-5 bg-gradient-to-b from-[#242124]/30 to-[#000000]/30 border-[#80609F]/30 backdrop-blur-3xl transition-all duration-500 max-md:absolute left-0 z-1 ${!isMenuOpen && "max-md:-translate-x-full"
+        }`}
     >
       {/* Logo */}
       <div className="max-w-7xl mx-auto flex gap-3 items-center justify-between h-16">
@@ -89,8 +96,8 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
           .filter((chat) =>
             chat.messages[0]
               ? chat.messages[0]?.content
-                  .toLowerCase()
-                  .includes(search.toLowerCase())
+                .toLowerCase()
+                .includes(search.toLowerCase())
               : chat.name.toLowerCase().includes(search.toLowerCase())
           )
           .map((chat) => (
@@ -106,8 +113,8 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
               <div>
                 <p className="tuncate w-full">
                   {chat.messages.length > 0
-                    ? chat.messages[0].content.slice(0, 32)
-                    : chat.name}
+                    ? limitWords(chat.messages[0].content, 5)
+                    : limitWords(chat.name, 5)}
                 </p>
                 <p className="text-xs text-[#B1A60]">
                   {moment(chat.updatedAt).fromNow()}
@@ -115,7 +122,7 @@ const SideBar = ({ isMenuOpen, setIsMenuOpen }) => {
               </div>
               <Trash
                 size={20}
-                onClick={e=>toast.promise(deleteChat(e,chat._id),{loading:'deleting..'})}
+                onClick={e => toast.promise(deleteChat(e, chat._id), { loading: 'deleting..' })}
                 className="hidden group-hover:block cursor-pointer my-auto text-slate-400"
               />
             </div>

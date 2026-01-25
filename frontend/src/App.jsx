@@ -5,6 +5,7 @@ import Register from "./pages/Register.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import ForgetPassword from "./pages/forgetPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
+import ORSAppointmentPage from "./pages/ORSAppointmentPage.jsx";
 import { Routes, Route } from "react-router-dom";
 import { useAppContext } from "./context/AppProvider.jsx";
 import { Toaster } from 'react-hot-toast'
@@ -23,6 +24,7 @@ const App = () => {
       <Route path="/forget-password" element={<ForgetPassword />} />
       <Route path="/reset-password" element={<ResetPassword />}/>
       <Route path="/otp-input" element={<OTPInput />}/>
+      <Route path="/book-appointment" element={<ORSAppointmentPage />}/>
     </Routes>
     </>
   );

@@ -7,6 +7,7 @@ import InteractivePreview from "../components/LandingPageComponents/InteractiveP
 import PricingSection from "../components/LandingPageComponents/PricingSection.jsx";
 import FeaturesGrid from "../components/LandingPageComponents/FeaturseGrid.jsx";
 import ReviewsSection from "../components/LandingPageComponents/ReviewsSection.jsx";
+import ThemedORSAppointmentBooking from "../components/ThemedORSAppointmentBooking.jsx";
 
 
 import {
@@ -68,6 +69,21 @@ const LandingPage = () => {
         <FeaturesGrid />
 
         <InteractivePreview />
+
+        {/* ORS Appointment Booking Section */}
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-white mb-4">
+                Book Hospital Appointments
+              </h2>
+              <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                Schedule appointments at top government hospitals with our ORS-integrated booking system
+              </p>
+            </div>
+            <ThemedORSAppointmentBooking />
+          </div>
+        </section>
 
         <ReviewsSection />
 
