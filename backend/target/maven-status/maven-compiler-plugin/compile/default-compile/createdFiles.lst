@@ -1,7 +1,10 @@
+com\healthchat\model\Doctor.class
 com\healthchat\service\openai\OpenAIService.class
 com\healthchat\controller\HealthController.class
 com\healthchat\service\gemini\GeminiService.class
+com\healthchat\model\Department.class
 com\healthchat\dto\MessageRequest.class
+com\healthchat\dto\ORSLoginRequest.class
 com\healthchat\dto\LoginRequest.class
 com\healthchat\config\SecurityConfig.class
 com\healthchat\controller\MessageController.class
@@ -9,11 +12,15 @@ com\healthchat\dto\RegisterRequest.class
 com\healthchat\repository\UserRepository.class
 com\healthchat\service\UserService.class
 com\healthchat\config\UserDetailsServiceImpl.class
+com\healthchat\model\Hospital.class
+com\healthchat\dto\ORSAppointmentRequest.class
 com\healthchat\HealthChatApplication.class
 com\healthchat\service\HealthDataService.class
 com\healthchat\controller\AuthController.class
+com\healthchat\model\ORSAppointment.class
 com\healthchat\dto\ResetPasswordRequest.class
 com\healthchat\dto\OTPRequest.class
+com\healthchat\controller\ORSController.class
 com\healthchat\service\AuthService.class
 com\healthchat\config\JwtAuthenticationFilter.class
 com\healthchat\controller\HealthDataController.class
@@ -28,6 +35,7 @@ com\healthchat\service\MessageService.class
 com\healthchat\model\Chat.class
 com\healthchat\model\HealthData.class
 com\healthchat\service\EmailService.class
+com\healthchat\service\ORSService.class
 com\healthchat\model\Disease.class
 com\healthchat\repository\ChatRepository.class
 com\healthchat\util\JwtUtil.class
