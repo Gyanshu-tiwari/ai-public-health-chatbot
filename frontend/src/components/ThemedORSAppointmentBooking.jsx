@@ -277,7 +277,7 @@ const ORSAppointmentBooking = () => {
           email: appointmentDetails.email,
           age: appointmentDetails.age,
           gender: appointmentDetails.gender,
-          appointmentDate: selectedDate,
+          appointmentDate: selectedDate + 'T00:00:00',
           timeSlot: selectedTimeSlot,
           consultationType: appointmentDetails.consultationType,
         }),
@@ -433,8 +433,8 @@ const ORSAppointmentBooking = () => {
                   key={hospital.id}
                   onClick={() => setSelectedHospital(hospital)}
                   className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedHospital?.id === hospital.id
-                      ? 'border-indigo-500 bg-indigo-500/10'
-                      : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
+                    ? 'border-indigo-500 bg-indigo-500/10'
+                    : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
                     }`}
                 >
                   <div className="flex items-start justify-between">
@@ -504,8 +504,8 @@ const ORSAppointmentBooking = () => {
                   key={department.id}
                   onClick={() => setSelectedDepartment(department)}
                   className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedDepartment?.id === department.id
-                      ? 'border-indigo-500 bg-indigo-500/10'
-                      : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
+                    ? 'border-indigo-500 bg-indigo-500/10'
+                    : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
                     }`}
                 >
                   <div className="flex items-start justify-between">
@@ -575,8 +575,8 @@ const ORSAppointmentBooking = () => {
                   key={doctor.id}
                   onClick={() => setSelectedDoctor(doctor)}
                   className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedDoctor?.id === doctor.id
-                      ? 'border-indigo-500 bg-indigo-500/10'
-                      : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
+                    ? 'border-indigo-500 bg-indigo-500/10'
+                    : 'border-gray-600 bg-gray-800/50 hover:border-gray-500'
                     }`}
                 >
                   <div className="flex items-start justify-between">
@@ -703,8 +703,8 @@ const ORSAppointmentBooking = () => {
                           type="button"
                           onClick={() => setSelectedTimeSlot(slot)}
                           className={`p-3 border rounded-lg text-sm transition-all ${selectedTimeSlot === slot
-                              ? 'border-indigo-500 bg-indigo-500/10 text-white'
-                              : 'border-gray-600 bg-gray-800/50 text-gray-300 hover:border-gray-500'
+                            ? 'border-indigo-500 bg-indigo-500/10 text-white'
+                            : 'border-gray-600 bg-gray-800/50 text-gray-300 hover:border-gray-500'
                             }`}
                         >
                           <div className="flex items-center gap-2">
@@ -962,7 +962,7 @@ const ORSAppointmentBooking = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 py-20">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
             {/* Progress Steps */}
             <div className="bg-gray-800/50 px-6 py-4 border-b border-gray-700">
