@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/AppProvider";
 import MessageItems from "./MessageItems";
+import QuickAppointmentBooking from "../QuickAppointmentBooking";
 import sendIcon from "../../assets/send_icon.svg";
 import stopIcon from "../../assets/stop_icon.svg";
 import toast from "react-hot-toast";
@@ -94,6 +95,9 @@ const ChatWindow = () => {
         {messages.map((message, index) => (
           <MessageItems key={index} message={message} />
         ))}
+        
+        {/* Quick Appointment Booking */}
+        <QuickAppointmentBooking />
 
         {/* Three Dot Loading animation */}
         {loading && (
